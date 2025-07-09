@@ -1,0 +1,14 @@
+.modalContent {
+  padding: 16px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:500px
+}
+
+.closeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
