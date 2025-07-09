@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MessageCircle, User, BookOpen, Calculator, ArrowRight, Phone, Mail, AlertTriangle, Heart, Users, GraduationCap, Info, ArrowLeft, Send, Eye, EyeOff } from 'lucide-react';
+import { X, MessageCircle, User, BookOpen, Calculator, ArrowRight, Phone, Mail, AlertTriangle, Heart, Users, GraduationCap, Info, ArrowLeft, Send, Eye, EyeOff, FileText, Code, Layers, Clock, Calendar } from 'lucide-react';
 
 interface Avatar {
   id: number;
@@ -15,9 +15,9 @@ interface ChatMessage {
   timestamp: Date;
 }
 
-export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+export const SchoolProjectsAI = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
-  const [showTeachWell, setShowTeachWell] = useState(false);
+  const [showSchoolAI, setShowSchoolAI] = useState(false);
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -31,323 +31,48 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
 
   const avatars = [
     { id: 1, emoji: '🤖', name: 'AI Assistant', color: 'bg-blue-500' },
-    { id: 2, emoji: '📚', name: 'Study Helper', color: 'bg-green-500' },
-    { id: 3, emoji: '🎓', name: 'Tutor', color: 'bg-purple-500' },
+    { id: 2, emoji: '📚', name: 'Project Helper', color: 'bg-green-500' },
+    { id: 3, emoji: '🔬', name: 'Science Guide', color: 'bg-purple-500' },
+    { id: 4, emoji: '🎨', name: 'Art Advisor', color: 'bg-pink-500' },
+    { id: 5, emoji: '💻', name: 'Tech Mentor', color: 'bg-orange-500' },
   ];
 
   const menuItems = [
-    { id: 'behaviour', title: 'BEHAVIOUR SUPPORT', icon: User, color: 'bg-red-500' },
-    { id: 'mental', title: 'MENTAL HEALTH', icon: Heart, color: 'bg-pink-500' },
-    { id: 'parenting', title: 'PARENTING SUPPORT', icon: Users, color: 'bg-green-500' },
-    { id: 'general', title: 'GENERAL SCHOOL INFORMATION', icon: Info, color: 'bg-blue-500' },
-    { id: 'transition', title: 'TRANSITION TO YEAR 7', icon: ArrowRight, color: 'bg-orange-500' },
-    { id: 'careers', title: '6TH FORM & CAREERS', icon: GraduationCap, color: 'bg-purple-500' },
+    { id: 'science', title: 'SCIENCE PROJECTS', icon: BookOpen, color: 'bg-green-500' },
+    { id: 'technology', title: 'TECHNOLOGY PROJECTS', icon: Code, color: 'bg-blue-500' },
+    { id: 'engineering', title: 'ENGINEERING PROJECTS', icon: Layers, color: 'bg-orange-500' },
+    { id: 'arts', title: 'ARTS & CRAFTS PROJECTS', icon: Heart, color: 'bg-pink-500' },
+    { id: 'math', title: 'MATHEMATICS PROJECTS', icon: Calculator, color: 'bg-purple-500' },
+    { id: 'planning', title: 'PROJECT PLANNING', icon: Calendar, color: 'bg-indigo-500' },
   ];
 
   const handleAvatarClick = (avatar: Avatar) => {
     setSelectedAvatar(avatar);
-    setTimeout(() => setShowTeachWell(true), 300);
+    setTimeout(() => setShowSchoolAI(true), 300);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowLogin(false);
-    setShowTeachWell(true);
-  };
+  // Keep existing functions (handleLogin, handleSignup, handlePasscodeSubmit, sendMessage)
+  // ... existing code ...
 
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowPasscode(true);
-  };
-
-  const handlePasscodeSubmit = () => {
-    if (passcode.length === 6) {
-      setShowPasscode(false);
-      setShowSignup(false);
-      setShowTeachWell(true);
-    }
-  };
-
-  const sendMessage = () => {
-    if (currentMessage.trim()) {
-      const newMessage: ChatMessage = {
-        id: Date.now().toString(),
-        text: currentMessage,
-        sender: 'user',
-        timestamp: new Date()
-      };
-      setChatMessages([...chatMessages, newMessage]);
-      setCurrentMessage('');
-      
-      // Simulate AI response
-      setTimeout(() => {
-        const aiResponse: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          text: "Thank you for your message. I'm here to help you with any questions or concerns you may have.",
-          sender: 'ai',
-          timestamp: new Date()
-        };
-        setChatMessages(prev => [...prev, aiResponse]);
-      }, 1000);
-    }
-  };
-
-  const renderLoginForm = () => (
-    <div className="p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">TEACHWELL AI</h2>
-        <p className="text-sm text-gray-600">Login</p>
-      </div>
-      
-      <form onSubmit={handleLogin} className="space-y-4">
-        <div>
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={loginForm.email}
-            onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
-          />
-        </div>
-        
-        <div className="relative">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={loginForm.password}
-            onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
-            required
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-3 text-gray-500"
-          >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={loginForm.remember}
-              onChange={(e) => setLoginForm({...loginForm, remember: e.target.checked})}
-              className="mr-2"
-            />
-            <span className="text-sm text-gray-600">Remember Me</span>
-          </label>
-          <button type="button" className="text-sm text-blue-600 hover:underline">
-            Forgot password?
-          </button>
-        </div>
-        
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-        >
-          Sign In
-        </button>
-        
-        <div className="text-center">
-          <p className="text-sm text-gray-600 mb-4">Or Login with</p>
-          <div className="flex justify-center space-x-4">
-            <button type="button" className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center">f</button>
-            <button type="button" className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center">G</button>
-            <button type="button" className="w-10 h-10 bg-blue-400 text-white rounded-full flex items-center justify-center">t</button>
-          </div>
-        </div>
-        
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={() => { setShowLogin(false); setShowSignup(true); }}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            Don't have an account? Register
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-
-  const renderSignupForm = () => (
-    <div className="p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">TEACHWELL AI</h2>
-        <p className="text-sm text-gray-600">Sign Up</p>
-      </div>
-      
-      <form onSubmit={handleSignup} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={signupForm.fullName}
-          onChange={(e) => setSignupForm({...signupForm, fullName: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-        
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={signupForm.email}
-          onChange={(e) => setSignupForm({...signupForm, email: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-        
-        <input
-          type="tel"
-          placeholder="Mobile Number"
-          value={signupForm.mobile}
-          onChange={(e) => setSignupForm({...signupForm, mobile: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-        
-        <input
-          type="password"
-          placeholder="Password"
-          value={signupForm.password}
-          onChange={(e) => setSignupForm({...signupForm, password: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-        
-        <input
-          type="number"
-          placeholder="Age"
-          value={signupForm.age}
-          onChange={(e) => setSignupForm({...signupForm, age: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-        
-        <input
-          type="text"
-          placeholder="Address"
-          value={signupForm.address}
-          onChange={(e) => setSignupForm({...signupForm, address: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-        
-        <select
-          value={signupForm.gender}
-          onChange={(e) => setSignupForm({...signupForm, gender: e.target.value})}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-        
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-        >
-          Sign Up
-        </button>
-        
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={() => { setShowSignup(false); setShowLogin(true); }}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            Already have an account? Sign In
-          </button>
-        </div>
-        
-        <p className="text-xs text-gray-600 text-center">
-          By creating a passcode, you agree with our Terms & Conditions and Privacy Policy
-        </p>
-      </form>
-    </div>
-  );
-
-  const renderPasscodeForm = () => (
-    <div className="p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Details</h2>
-        <p className="text-sm text-gray-600">Jane Doe</p>
-      </div>
-      
-      <div className="mb-6">
-        <p className="text-sm text-gray-600 mb-4">Passcode</p>
-        <div className="grid grid-cols-3 gap-2 mb-4">
-          {[1,2,3,4,5,6,7,8,9,0].map((num) => (
-            <button
-              key={num}
-              onClick={() => {
-                if (passcode.length < 6) {
-                  setPasscode(prev => prev + num.toString());
-                }
-              }}
-              className="h-12 bg-gray-100 rounded-lg text-lg font-medium hover:bg-gray-200 transition-colors"
-            >
-              {num}
-            </button>
-          ))}
-        </div>
-        
-        <div className="flex justify-center space-x-2 mb-4">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className={`w-4 h-4 rounded-full border-2 ${
-                i < passcode.length ? 'bg-blue-500 border-blue-500' : 'border-gray-300'
-              }`}
-            />
-          ))}
-        </div>
-        
-        <div className="text-center">
-          <button
-            onClick={handlePasscodeSubmit}
-            disabled={passcode.length !== 6}
-            className={`px-8 py-2 rounded-lg font-medium transition-colors ${
-              passcode.length === 6 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-          >
-            Let's Go
-          </button>
-        </div>
-        
-        <div className="text-center mt-4">
-          <button className="text-sm text-blue-600 hover:underline">
-            Resend passcode
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
+  // Update the renderHomePage function
   const renderHomePage = () => (
     <div className="p-6">
       <div className="flex items-center gap-2 mb-2">
         <div className="px-3 py-1 bg-indigo-600 text-white rounded-full text-xs font-medium">
-          TEACHER ACCESS LOG IN
+          SCHOOL PROJECTS ASSISTANT
         </div>
       </div>
 
       <div className="bg-orange-300 text-orange-800 p-2 rounded mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">LATEST SCHOOL NEWS</span>
+          <span className="text-sm font-medium">PROJECT IDEAS</span>
           <ArrowRight size={16} />
         </div>
       </div>
 
-      <h2 className="text-xl font-bold text-gray-800 mb-1">TeachWell AI</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-1">School Projects AI</h2>
       <p className="text-sm text-gray-600 mb-4">
-        Supporting educators, empowering schools. Access instant information, personalised resources, and expert guidance at your fingertips.
+        Your personal assistant for school projects. Get ideas, step-by-step guidance, and resources for your next assignment.
       </p>
 
       <div className="flex justify-center mb-4">
@@ -363,9 +88,9 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
 
       <div className="bg-indigo-600 text-white p-3 rounded-lg mb-4">
         <p className="text-sm font-medium">
-          How can I help you today?{' '}
+          How can I help with your project?{' '}
           <span className="text-indigo-200">
-            Select a topic or ask me a question to get started.
+            Select a project type or ask me a question to get started.
           </span>
         </p>
       </div>
@@ -396,12 +121,13 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
       </div>
 
       <p className="text-xs text-gray-600 mt-4 leading-relaxed">
-        Selecting a topic from the menu below is designed to streamline your experience with TeachWell AI. Each topic provides tailored resources and support to address specific needs within the school environment.
+        Selecting a project type from the menu below will provide you with tailored ideas, resources, and step-by-step guidance for your school assignment.
       </p>
     </div>
   );
 
-  const renderBehaviourSupport = () => (
+  // Add new project type pages
+  const renderScienceProjects = () => (
     <div className="p-6">
       <div className="flex items-center gap-2 mb-4">
         <button
@@ -410,190 +136,117 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
         >
           <ArrowLeft size={20} />
         </button>
-        <h2 className="text-lg font-bold text-gray-800">Behaviour Support</h2>
+        <h2 className="text-lg font-bold text-gray-800">Science Projects</h2>
       </div>
 
       <p className="text-sm text-gray-600 mb-4">
-        Welcome to the Behaviour Support page. This section is designed to help students and parents report incidents and access resources for managing challenging situations.
+        Explore exciting science project ideas for all grade levels. From biology to chemistry and physics experiments.
       </p>
 
-      <div className="space-y-3">
-        <button className="w-full bg-red-500 text-white p-3 rounded-lg font-medium hover:bg-red-600 transition-colors">
-          REPORT AN INCIDENT
-        </button>
-        
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg font-medium hover:bg-blue-600 transition-colors">
-          ACCESS RESOURCES
-        </button>
-        
-        <button className="w-full bg-orange-500 text-white p-3 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-          GET IMMEDIATE SUPPORT
-        </button>
-      </div>
-
-      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-        <h3 className="font-medium text-gray-800 mb-2">Available Support Options:</h3>
-        <div className="space-y-2 text-sm text-gray-600">
-          <div>
-            <strong>AI-Powered Chat Support:</strong>
-            <ul className="ml-4 mt-1 space-y-1">
-              <li>• Get instant responses to your concerns</li>
-              <li>• Access personalised coping strategies</li>
-              <li>• Receive guidance on managing situations</li>
-            </ul>
+      <div className="space-y-3 mb-4">
+        <div className="bg-white border border-gray-200 p-4 rounded-lg">
+          <h3 className="font-medium text-green-700 mb-1">Ecosystem in a Bottle</h3>
+          <p className="text-sm text-gray-600 mb-2">Create a self-sustaining ecosystem in a sealed container.</p>
+          <div className="flex justify-end">
+            <button className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 transition-colors">
+              View Details
+            </button>
           </div>
-          <div>
-            <strong>Emergency Contacts:</strong>
-            <ul className="ml-4 mt-1 space-y-1">
-              <li>• School Counselor: [Phone Number]</li>
-              <li>• Anti-Bullying Hotline: [Phone Number]</li>
-            </ul>
+        </div>
+        
+        <div className="bg-white border border-gray-200 p-4 rounded-lg">
+          <h3 className="font-medium text-green-700 mb-1">Solar System Model</h3>
+          <p className="text-sm text-gray-600 mb-2">Build a scale model of our solar system with accurate proportions.</p>
+          <div className="flex justify-end">
+            <button className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 transition-colors">
+              View Details
+            </button>
+          </div>
+        </div>
+        
+        <div className="bg-white border border-gray-200 p-4 rounded-lg">
+          <h3 className="font-medium text-green-700 mb-1">Water Filtration System</h3>
+          <p className="text-sm text-gray-600 mb-2">Design and test different methods of water purification.</p>
+          <div className="flex justify-end">
+            <button className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 transition-colors">
+              View Details
+            </button>
           </div>
         </div>
       </div>
-    </div>
-  );
-
-  const renderMentalHealth = () => (
-    <div className="p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <button
-          onClick={() => setCurrentPage('home')}
-          className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h2 className="text-lg font-bold text-gray-800">Mental Health</h2>
-      </div>
-
-      <p className="text-sm text-gray-600 mb-4">
-        Mental health is an essential part of overall well-being. Here, you'll find resources to help understand, manage, and improve mental health.
-      </p>
-
-      <div className="bg-red-50 border border-red-200 p-3 rounded-lg mb-4">
-        <div className="flex items-center gap-2 text-red-700">
-          <AlertTriangle size={16} />
-          <span className="text-sm font-medium">Crisis Support Available</span>
-        </div>
-        <p className="text-xs text-red-600 mt-1">
-          If you're experiencing a mental health crisis, please call 999 immediately.
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        <button className="w-full bg-pink-500 text-white p-3 rounded-lg font-medium hover:bg-pink-600 transition-colors">
-          MENTAL HEALTH RESOURCES
-        </button>
-        
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg font-medium hover:bg-blue-600 transition-colors">
-          BOOK A CONSULTATION
-        </button>
-        
-        <button className="w-full bg-green-500 text-white p-3 rounded-lg font-medium hover:bg-green-600 transition-colors">
-          SELF HELP TOOLS
-        </button>
-        
-        <button className="w-full bg-red-500 text-white p-3 rounded-lg font-medium hover:bg-red-600 transition-colors">
-          CRISIS SUPPORT
-        </button>
-      </div>
-
-      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-        <h3 className="font-medium text-gray-800 mb-2">Emergency Contacts:</h3>
-        <div className="space-y-1 text-sm text-gray-600">
-          <div>Emergency Services: 999</div>
-          <div>NHS Mental Health Crisis Line: [Insert local number]</div>
-          <div>Samaritans: 116 123 (24/7 support)</div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderChat = () => (
-    <div className="p-6 h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <button
-          onClick={() => setCurrentPage('home')}
-          className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h2 className="text-lg font-bold text-gray-800">Chat Support</h2>
-      </div>
-
-      <div className="flex-1 bg-gray-50 rounded-lg p-4 mb-4 max-h-60 overflow-y-auto">
-        {chatMessages.length === 0 ? (
-          <div className="text-center text-gray-500 mt-8">
-            <MessageCircle size={48} className="mx-auto mb-4 text-gray-400" />
-            <p>Start a conversation with TeachWell AI</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {chatMessages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-xs p-3 rounded-lg ${
-                    message.sender === 'user'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white text-gray-800 border'
-                  }`}
-                >
-                  <p className="text-sm">{message.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex gap-2">
-        <input
-          type="text"
-          value={currentMessage}
-          onChange={(e) => setCurrentMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Type your message..."
-          className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-        <button
-          onClick={sendMessage}
-          className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          <Send size={20} />
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderGenericPage = (title: string) => (
-    <div className="p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <button
-          onClick={() => setCurrentPage('home')}
-          className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h2 className="text-lg font-bold text-gray-800">{title}</h2>
-      </div>
-
-      <p className="text-sm text-gray-600 mb-4">
-        Welcome to the {title} page. Resources and support for this topic are being prepared.
-      </p>
 
       <button 
         onClick={() => setCurrentPage('chat')}
-        className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center gap-2"
+        className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2"
       >
-        START CHAT
-        <ArrowRight size={16} />
+        GET PROJECT HELP
+        <MessageCircle size={16} />
       </button>
     </div>
   );
 
+  const renderTechnologyProjects = () => (
+    <div className="p-6">
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          onClick={() => setCurrentPage('home')}
+          className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <h2 className="text-lg font-bold text-gray-800">Technology Projects</h2>
+      </div>
+
+      <p className="text-sm text-gray-600 mb-4">
+        Discover technology project ideas from simple coding exercises to advanced robotics and app development.
+      </p>
+
+      <div className="space-y-3 mb-4">
+        <div className="bg-white border border-gray-200 p-4 rounded-lg">
+          <h3 className="font-medium text-blue-700 mb-1">Personal Website</h3>
+          <p className="text-sm text-gray-600 mb-2">Create your own website using HTML, CSS, and basic JavaScript.</p>
+          <div className="flex justify-end">
+            <button className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 transition-colors">
+              View Details
+            </button>
+          </div>
+        </div>
+        
+        <div className="bg-white border border-gray-200 p-4 rounded-lg">
+          <h3 className="font-medium text-blue-700 mb-1">Simple Robot</h3>
+          <p className="text-sm text-gray-600 mb-2">Build a basic robot that can follow a line or avoid obstacles.</p>
+          <div className="flex justify-end">
+            <button className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 transition-colors">
+              View Details
+            </button>
+          </div>
+        </div>
+        
+        <div className="bg-white border border-gray-200 p-4 rounded-lg">
+          <h3 className="font-medium text-blue-700 mb-1">Mobile App Prototype</h3>
+          <p className="text-sm text-gray-600 mb-2">Design a prototype for a mobile app that solves a real problem.</p>
+          <div className="flex justify-end">
+            <button className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 transition-colors">
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button 
+        onClick={() => setCurrentPage('chat')}
+        className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2"
+      >
+        GET PROJECT HELP
+        <MessageCircle size={16} />
+      </button>
+    </div>
+  );
+
+  // Add similar render functions for other project types
+  // renderEngineeringProjects, renderArtsProjects, renderMathProjects, renderProjectPlanning
+
+  // Update the main return statement
   if (!open) return null;
 
   return (
@@ -607,17 +260,17 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
           <X size={18} />
         </button>
 
-        {!showTeachWell && !showLogin && !showSignup && !showPasscode && (
+        {!showSchoolAI && !showLogin && !showSignup && !showPasscode && (
           <>
             <div className="p-6">
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <MessageCircle className="text-blue-600" size={24} />
                   <h2 className="text-lg font-semibold text-gray-800">
-                    👋 Hi! I'm School AI Assistant
+                    👋 Hi! I'm School Projects AI
                   </h2>
                 </div>
-                <p className="text-sm text-gray-600 mb-4">How can I help you today?</p>
+                <p className="text-sm text-gray-600 mb-4">Need help with a school project? I'm here to assist!</p>
               </div>
 
               <div>
@@ -656,19 +309,19 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
               </div>
 
               <div className="mt-6 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500 mb-3">Popular topics:</p>
+                <p className="text-xs text-gray-500 mb-3">Popular project types:</p>
                 <div className="flex flex-wrap gap-2">
                   <button className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs hover:bg-blue-200 transition-colors">
                     <BookOpen size={12} />
-                    Study Help
+                    Science Fair
                   </button>
                   <button className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs hover:bg-green-200 transition-colors">
-                    <Calculator size={12} />
-                    Math Problems
+                    <Code size={12} />
+                    Coding
                   </button>
                   <button className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs hover:bg-purple-200 transition-colors">
-                    <User size={12} />
-                    Homework
+                    <Layers size={12} />
+                    3D Models
                   </button>
                 </div>
               </div>
@@ -685,24 +338,23 @@ export const TeachWellAISystem = ({ open, onClose }: { open: boolean; onClose: (
           </>
         )}
 
-        {showLogin && renderLoginForm()}
+        {/* {showLogin && renderLoginForm()}
         {showSignup && renderSignupForm()}
         {showPasscode && renderPasscodeForm()}
         
-        {showTeachWell && (
+        {showSchoolAI && (
           <>
             {currentPage === 'home' && renderHomePage()}
-            {currentPage === 'behaviour' && renderBehaviourSupport()}
-            {currentPage === 'mental' && renderMentalHealth()}
+            {currentPage === 'science' && renderScienceProjects()}
+            {currentPage === 'technology' && renderTechnologyProjects()}
+            {currentPage === 'engineering' && renderGenericPage('Engineering Projects')}
+            {currentPage === 'arts' && renderGenericPage('Arts & Crafts Projects')}
+            {currentPage === 'math' && renderGenericPage('Mathematics Projects')}
+            {currentPage === 'planning' && renderGenericPage('Project Planning')}
             {currentPage === 'chat' && renderChat()}
-            {currentPage === 'parenting' && renderGenericPage('Parenting Support')}
-            {currentPage === 'general' && renderGenericPage('General School Information')}
-            {currentPage === 'transition' && renderGenericPage('Transition to Year 7')}
-            {currentPage === 'careers' && renderGenericPage('6th Form & Careers')}
           </>
-        )}
+        )} */}
       </div>
     </div>
   );
 };
-            
