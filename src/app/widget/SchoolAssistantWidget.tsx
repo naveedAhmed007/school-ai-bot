@@ -1,139 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle, X, Send, ArrowLeft, Clock, Calendar, Phone, Users, BookOpen, Heart, AlertCircle } from 'lucide-react';
-
-/* ------------------------------------------------------------------
-   Types
--------------------------------------------------------------------*/
-
-interface MenuOption {
-    id: string;
-    name: string;
-    icon: any;
-}
-
-interface SubMenuItem {
-    name: string;
-    icon: any;
-    content: string;
-}
-
-interface Avatar {
-    id: number;
-    name: string;
-    svg: React.ReactElement;
-}
-
-// Inline SVG cartoon avatars as React components
-const CartoonAvatars: Avatar[] = [
-    {
-        id: 1,
-        name: 'Alex (Male, Young)',
-        svg: (
-            <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="30" fill="#F9D5B3" />
-                <path fill="#5D4037" d="M20 40c6 4 24 4 24 0v8H20v-8z" />
-                <circle cx="22" cy="30" r="5" fill="#3E2723" />
-                <circle cx="42" cy="30" r="5" fill="#3E2723" />
-                <path d="M20 25c0-6 24-6 24 0" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        id: 2,
-        name: 'Bella (Female, Young)',
-        svg: (
-            <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="30" fill="#FFD1DC" />
-                <path fill="#4E342E" d="M16 38c7 5 24 5 24 0v6H16v-6z" />
-                <circle cx="22" cy="28" r="6" fill="#6D4C41" />
-                <circle cx="42" cy="28" r="6" fill="#6D4C41" />
-                <path d="M22 26c0-5 20-5 20 0" stroke="#3E2723" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        id: 3,
-        name: 'Chris (Non-binary)',
-        svg: (
-            <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="30" fill="#C6B89F" />
-                <path fill="#3E2723" d="M24 40c8 6 16 0 16 0v6H24v-6z" />
-                <circle cx="25" cy="30" r="5" fill="#4E342E" />
-                <circle cx="40" cy="30" r="5" fill="#4E342E" />
-                <path d="M24 25c0-6 16-6 16 0" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        id: 4,
-        name: 'Dana (Older Female)',
-        svg: (
-            <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="30" fill="#E7C9A9" />
-                <path fill="#4E342E" d="M18 38c9 6 24 6 24 0v5H18v-5z" />
-                <circle cx="22" cy="28" r="7" fill="#6D4C41" />
-                <circle cx="42" cy="28" r="7" fill="#6D4C41" />
-                <path d="M20 24c0-4 24-4 24 0" stroke="#3E2723" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        id: 5,
-        name: 'Eli (Bald Male)',
-        svg: (
-            <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="30" fill="#B49982" />
-                <path fill="#3E2723" d="M21 38c6 5 22 5 22 0v5H21v-5z" />
-                <circle cx="24" cy="30" r="5" fill="#5D4037" />
-                <circle cx="40" cy="30" r="5" fill="#5D4037" />
-                <path d="M21 25c0-5 22-5 22 0" stroke="#6D4C41" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        id: 6,
-        name: 'Faith (Young Female, Glasses)',
-        svg: (
-            <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="30" fill="#FFD9B3" />
-                <path fill="#4E342E" d="M18 38c8 7 24 7 24 0v5H18v-5z" />
-                <circle cx="22" cy="28" r="6" fill="#6D4C41" />
-                <circle cx="42" cy="28" r="6" fill="#6D4C41" />
-                <rect x="16" y="25" width="12" height="4" fill="none" stroke="#3E2723" strokeWidth="2" rx="2" ry="2" />
-                <rect x="36" y="25" width="12" height="4" fill="none" stroke="#3E2723" strokeWidth="2" rx="2" ry="2" />
-                <path d="M20 22c0-3 24-3 24 0" stroke="#3E2723" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-];
-
-const menuOptions: MenuOption[] = [
-    { id: 'school-info', name: 'School Information', icon: BookOpen },
-    { id: 'wellbeing', name: 'Wellbeing & Support', icon: Heart },
-    { id: 'parent-resources', name: 'Parent Resources', icon: Users },
-    { id: 'careers', name: 'Careers & Universities (6th Form)', icon: BookOpen },
-    { id: 'report', name: 'Report Incident/Absence', icon: AlertCircle },
-    { id: 'question', name: 'Ask a Question', icon: MessageCircle },
-    { id: 'teacher-portal', name: 'Teacher Portal', icon: Users },
-];
-
-const schoolInfoSubMenu: SubMenuItem[] = [
-    { name: 'School Calendar', icon: Calendar, content: 'View important dates and events for the academic year.' },
-    { name: 'Term Dates', icon: Clock, content: 'Term 1: Sept 4 - Dec 15, 2024\nTerm 2: Jan 8 - Mar 28, 2025\nTerm 3: Apr 14 - Jul 18, 2025' },
-    { name: 'Uniform Information', icon: Users, content: 'Navy blazer, white shirt, school tie, grey trousers/skirt. PE kit includes house t-shirt and navy shorts.' },
-    { name: 'Canteen Menu', icon: BookOpen, content: 'Weekly rotating menu available. Healthy options include salad bar, jacket potatoes, and fresh fruit daily.' },
-    { name: 'Contact Information', icon: Phone, content: 'Main Office: 01234 567890\nEmail: office@school.edu\nAddress: 123 Education Street, Learning City, LC1 2AB' },
-    { name: 'Policies & Procedures', icon: BookOpen, content: 'Access to behavior policy, safeguarding procedures, and academic guidelines.' },
-];
-
-const teacherPortalMenu: SubMenuItem[] = [
-    { name: 'AI Lesson Planner', icon: BookOpen, content: 'Generate personalized lesson plans using AI technology.' },
-    { name: 'Classroom Analytics', icon: BookOpen, content: 'Track student engagement and performance metrics.' },
-    { name: 'Teacher Wellbeing Hub', icon: Heart, content: 'Resources and support for teacher mental health and work-life balance.' },
-    { name: 'Student Support Centre', icon: Users, content: 'Tools for identifying and supporting students who need additional help.' },
-    { name: 'Resource Library', icon: BookOpen, content: 'Access to teaching materials, worksheets, and digital resources.' },
-    { name: 'Progress Tracking', icon: BookOpen, content: 'Monitor student progress and generate reports for parents.' },
-];
+import Header from '../components/Header';
+import AvatarSelector from '../components/AvatarSelector';
+import { Avatar, StudentParentMenuOption } from '../types';
+import { CartoonAvatars } from '../constants/cartoonAvatars';
+import { ArrowLeft, MessageCircle, Send, User } from 'lucide-react';
+import { parentStudentMenu, schoolInformationMenu } from '../constants/menuOptions';
 
 const quickResponses = [
     "What are the school hours?",
@@ -144,11 +15,6 @@ const quickResponses = [
     "What's the homework policy?"
 ];
 
-const subMenus: Record<string, SubMenuItem[]> = {
-    'school-info': schoolInfoSubMenu,
-    'teacher-portal': teacherPortalMenu,
-};
-
 /* ------------------------------------------------------------------
    Component
 -------------------------------------------------------------------*/
@@ -156,8 +22,9 @@ const subMenus: Record<string, SubMenuItem[]> = {
 export default function SchoolAssistantWidget() {
     const [open, setOpen] = useState(false);
     const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
-    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [selectedItem, setSelectedItem] = useState<StudentParentMenuOption | null>(null);
     const [avatarSelected, setAvatarSelected] = useState<number | null>(null);
+    const [showAvatarSelection, setShowAvatarSelection] = useState(false);
     const [chatMode, setChatMode] = useState(false);
     const [messages, setMessages] = useState<Array<{ id: number, text: string, sender: 'user' | 'bot', timestamp: Date }>>([]);
     const [inputMessage, setInputMessage] = useState('');
@@ -207,6 +74,17 @@ export default function SchoolAssistantWidget() {
         };
     }, [open, isMobile]);
 
+    useEffect(() => {
+        const saved = localStorage.getItem('selectedAvatar');
+        if (saved) setAvatarSelected(Number(saved));
+    }, []);
+
+    useEffect(() => {
+        if (avatarSelected !== null) {
+            localStorage.setItem('selectedAvatar', avatarSelected.toString());
+        }
+    }, [avatarSelected]);
+
     /* ------------------------------ Handlers -----------------------*/
     const handleMenuClick = (menuId: string) => {
         if (menuId === 'question') {
@@ -236,16 +114,7 @@ export default function SchoolAssistantWidget() {
         setSelectedItem(item);
     };
 
-    const getSubMenuItems = (menuId: string): any[] => {
-        switch (menuId) {
-            case 'school-info':
-                return schoolInfoSubMenu;
-            case 'teacher-portal':
-                return teacherPortalMenu;
-            default:
-                return [];
-        }
-    };
+    
 
     const simulateBotResponse = useCallback((userText: string) => {
         setIsTyping(true);
@@ -275,8 +144,9 @@ export default function SchoolAssistantWidget() {
         setChatMode(false);
     };
 
-    const selectedAvatarObj = avatarSelected ? CartoonAvatars.find((a) => a.id === avatarSelected) : null;
-
+    const selectedAvatarObj: Avatar | null = avatarSelected
+        ? CartoonAvatars.find((a) => a.id === avatarSelected) ?? null
+        : null;
     // Dynamic sizing based on device
     const getWidgetSize = () => {
         if (isMobile) {
@@ -332,46 +202,22 @@ export default function SchoolAssistantWidget() {
                     style={widgetStyle}
                 >
                     {/* Header */}
-                    <div className="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-                        <h2 className="text-sm md:text-lg font-semibold flex items-center gap-2">
-                            {selectedAvatarObj && (
-                                <span className="w-8 h-8 md:w-10 md:h-10 flex-shrink-0" aria-label={selectedAvatarObj.name}>
-                                    {selectedAvatarObj.svg}
-                                </span>
-                            )}
-                            <span className="hidden md:inline">Hello! I'm your School Assistant</span>
-                            <span className="md:hidden">School Assistant</span>
-                        </h2>
-                        <button
-                            aria-label="Close"
-                            onClick={() => setOpen(false)}
-                            className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                        >
-                            <X size={isMobile ? 18 : 20} />
-                        </button>
-                    </div>
+                    <Header
+                        setOpen={setOpen}
+                        isMobile={isMobile}
+                        onTeacherLogin={() => { }}
+                    />
 
                     {/* Avatar Selection */}
-                    {avatarSelected === null ? (
-                        <div className="flex flex-col items-center justify-center flex-1 gap-4 px-4 py-6 text-center">
-                            <p className="text-gray-600 text-sm md:text-base mb-2">Choose an avatar to get started:</p>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 w-full max-w-md">
-                                {CartoonAvatars.map((av) => (
-                                    <button
-                                        key={av.id}
-                                        onClick={() => setAvatarSelected(av.id)}
-                                        className="flex flex-col items-center p-3 md:p-4 rounded-xl border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                                    >
-                                        <div className="w-12 h-12 md:w-14 md:h-14 mb-2">
-                                            {av.svg}
-                                        </div>
-                                        <div className="text-xs md:text-sm font-medium text-gray-700 text-center leading-tight">
-                                            {av.name}
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                    {showAvatarSelection ? (
+                        <AvatarSelector
+                            avatars={CartoonAvatars}
+                            selectedId={avatarSelected}
+                            onSelect={(id) => {
+                                setAvatarSelected(id);
+                                setShowAvatarSelection(false);
+                            }}
+                        />
                     ) : chatMode ? (
                         /* ------------- Chat Mode -------------------*/
                         <div className="flex-1 flex flex-col min-h-0">
@@ -456,23 +302,49 @@ export default function SchoolAssistantWidget() {
                         /* Menu Navigation */
                         <div className="flex-1 overflow-auto p-4 text-gray-700">
                             {!selectedMenu ? (
-                                <div className="space-y-3" role="menu">
-                                    <p className="text-sm text-gray-500 mb-4">What can I help you with today?</p>
-                                    {menuOptions.map((menu) => {
-                                        const Icon = menu.icon;
-                                        return (
-                                            <button
-                                                key={menu.id}
-                                                role="menuitem"
-                                                onClick={() => handleMenuClick(menu.id)}
-                                                className="w-full text-left px-4 py-4 bg-white hover:bg-blue-50 rounded-xl border border-gray-200 shadow-sm transition-all hover:shadow-md flex items-center gap-3"
-                                            >
-                                                <Icon size={20} className="text-blue-600 flex-shrink-0" />
-                                                <span className="text-sm md:text-base font-medium">{menu.name}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
+                                <>
+                                    {/* 🌟 Welcome message block */}
+
+                                    {selectedAvatarObj && (
+                                        <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden">
+                                            {selectedAvatarObj.svg}
+                                        </div>
+                                    )}
+                                    <div className="text-center mb-6">
+                                        <h2 className="text-xl font-semibold text-blue-700">
+                                            👋 Hi! I'm your School Assistant
+                                        </h2>
+                                        <p className="text-sm text-gray-600 mt-1">
+                                            How can I help you today?
+                                        </p>
+                                        <button
+                                            onClick={() => { setShowAvatarSelection(true) }}
+                                            className="inline-flex items-center gap-2 px-3 py-1 text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded transition-colors"
+                                            aria-label="Choose Your Avatar"
+                                        >
+                                            <User size={18} />
+                                            <span className="text-sm font-medium">Choose Your Avatar</span>
+                                        </button>
+
+
+                                    </div>
+                                    <div className="space-y-3" role="menu">
+                                        {parentStudentMenu.map((menu) => {
+                                            const Icon = menu.icon;
+                                            return (
+                                                <button
+                                                    key={menu.id}
+                                                    role="menuitem"
+                                                    onClick={() => handleMenuClick(menu.id)}
+                                                    className="w-full text-left px-4 py-4 bg-white hover:bg-blue-50 rounded-xl border border-gray-200 shadow-sm transition-all hover:shadow-md flex items-center gap-3"
+                                                >
+                                                    <Icon size={20} className="text-blue-600 flex-shrink-0" />
+                                                    <span className="text-sm md:text-base font-medium">{menu.name}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </>
                             ) : selectedItem ? (
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3 mb-4">
@@ -507,7 +379,7 @@ export default function SchoolAssistantWidget() {
                                 <div className="space-y-3">
                                     <div className="mb-4 flex justify-between items-center">
                                         <h3 className="text-base md:text-lg font-semibold text-blue-700">
-                                            {menuOptions.find(m => m.id === selectedMenu)?.name}
+                                            {parentStudentMenu.find(m => m.id === selectedMenu)?.name}
                                         </h3>
                                         <button
                                             onClick={resetMenu}
@@ -517,7 +389,7 @@ export default function SchoolAssistantWidget() {
                                         </button>
                                     </div>
 
-                                    {getSubMenuItems(selectedMenu).map((item, idx) => {
+                                    {schoolInformationMenu.map((item, idx) => {
                                         const Icon = item.icon;
                                         return (
                                             <button
