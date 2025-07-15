@@ -5,5 +5,6 @@ export const TEXTS = {
     },
     closeButtonLabel: 'Close',
     teacherAccessLogin: 'Teacher Access Login',
-    selectAvatarPrompt:"Choose an avatar to get started:"
+    selectAvatarPrompt: "Choose an avatar to get started:",
+    widgetFooterText:"School Assistant. All rights reserved.",
 }

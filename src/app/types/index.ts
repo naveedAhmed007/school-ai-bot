@@ -1,21 +1,26 @@
-import React from 'react';
+import { ReactElement } from 'react';
+import { LucideIcon } from 'lucide-react';
+
 export interface Avatar {
-    id: number;
-    name: string;
-    svg: React.ReactElement;
+  id: number;
+  name: string;
+  svg: ReactElement;
 }
+
 export interface AvatarSelectorProps {
-    avatars: Avatar[];
-    selectedId: number | null;
-    onSelect: (id: number) => void;
+  avatars: Avatar[];
+  selectedId: number | null;
+  onSelect: (id: number) => void;
 }
+
 export interface StudentParentMenuOption {
-    id: string;
-    name: string;
-    icon: any;
+  id: string;
+  name: string;
+  icon: LucideIcon;
 }
+
 export interface SchoolInformationMenuItem {
-    name: string;
-    icon: any;
-    content: string;
+  name: string;
+  icon: LucideIcon;
+  content: string;
 }

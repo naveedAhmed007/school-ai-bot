@@ -4,7 +4,12 @@ import AvatarSelector from '../components/AvatarSelector';
 import { Avatar, StudentParentMenuOption } from '../types';
 import { CartoonAvatars } from '../constants/cartoonAvatars';
 import { ArrowLeft, MessageCircle, Send, User } from 'lucide-react';
-import { parentStudentMenu, schoolInformationMenu } from '../constants/menuOptions';
+import { menus } from '../constants/menuOptions';
+import Footer from '../components/Footer';
+import ChatLauncher from '../components/ChatLauncher';
+
+const parentMenu = menus['parent-student'];
+const schoolInfoMenu = menus['school-info'];
 
 const quickResponses = [
     "What are the school hours?",
@@ -114,7 +119,7 @@ export default function SchoolAssistantWidget() {
         setSelectedItem(item);
     };
 
-    
+
 
     const simulateBotResponse = useCallback((userText: string) => {
         setIsTyping(true);
@@ -328,18 +333,28 @@ export default function SchoolAssistantWidget() {
 
 
                                     </div>
-                                    <div className="space-y-3" role="menu">
-                                        {parentStudentMenu.map((menu) => {
+                                    <div className="space-y-4" role="menu">
+                                        {parentMenu.map((menu) => {
                                             const Icon = menu.icon;
                                             return (
                                                 <button
                                                     key={menu.id}
                                                     role="menuitem"
                                                     onClick={() => handleMenuClick(menu.id)}
-                                                    className="w-full text-left px-4 py-4 bg-white hover:bg-blue-50 rounded-xl border border-gray-200 shadow-sm transition-all hover:shadow-md flex items-center gap-3"
+                                                    className="
+    w-full text-left px-5 py-3
+    bg-white hover:bg-blue-50
+    rounded-lg
+    border border-gray-300
+    shadow-sm hover:shadow-md
+    transition
+    flex items-center gap-3
+    focus:outline-none focus:ring-2 focus:ring-blue-400
+    active:scale-95
+  "
                                                 >
-                                                    <Icon size={20} className="text-blue-600 flex-shrink-0" />
-                                                    <span className="text-sm md:text-base font-medium">{menu.name}</span>
+                                                    <Icon size={22} className="text-blue-600 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
+                                                    <span className="text-base font-medium text-gray-700">{menu.name}</span>
                                                 </button>
                                             );
                                         })}
@@ -379,7 +394,7 @@ export default function SchoolAssistantWidget() {
                                 <div className="space-y-3">
                                     <div className="mb-4 flex justify-between items-center">
                                         <h3 className="text-base md:text-lg font-semibold text-blue-700">
-                                            {parentStudentMenu.find(m => m.id === selectedMenu)?.name}
+                                            {parentMenu.find(m => m.id === selectedMenu)?.name}
                                         </h3>
                                         <button
                                             onClick={resetMenu}
@@ -389,7 +404,7 @@ export default function SchoolAssistantWidget() {
                                         </button>
                                     </div>
 
-                                    {schoolInformationMenu.map((item, idx) => {
+                                    {schoolInfoMenu.map((item, idx) => {
                                         const Icon = item.icon;
                                         return (
                                             <button
@@ -408,33 +423,11 @@ export default function SchoolAssistantWidget() {
                     )}
 
                     {/* Footer */}
-                    <div className="p-3 text-center text-xs text-gray-400 border-t bg-gray-50">
-                        © {new Date().getFullYear()} School Assistant. All rights reserved.
-                    </div>
+                    <Footer />
                 </div>
+
             ) : (
-                <button
-                    onClick={() => setOpen(true)}
-                    className={`
-    bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700
-    text-white rounded-full
-    shadow-lg shadow-indigo-500/50
-    hover:from-purple-700 hover:via-indigo-700 hover:to-blue-600
-    hover:shadow-xl hover:shadow-purple-600/70
-    transition-transform transition-shadow duration-300
-    transform hover:scale-110 active:scale-95
-    focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50
-    flex items-center justify-center
-  `}
-                    style={{
-                        padding: isMobile ? '1rem' : '1.125rem',
-                        width: isMobile ? '4rem' : '4.5rem',
-                        height: isMobile ? '4rem' : '4.5rem',
-                    }}
-                    aria-label="Open School Assistant Chat"
-                >
-                    <MessageCircle size={isMobile ? 22 : 26} />
-                </button>
+                <ChatLauncher onOpen={() => setOpen(true)} />
             )}
         </div>
     );
