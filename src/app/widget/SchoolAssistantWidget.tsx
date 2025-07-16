@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import AvatarSelector from '../components/AvatarSelector';
 import { Avatar } from '../types';
 import { CartoonAvatars } from '../constants/cartoonAvatars';
-import { ArrowLeft, MessageCircle, Send, User } from 'lucide-react';
+import { ArrowLeft, User } from 'lucide-react';
 import { menus } from '../constants/menuOptions';
 import Footer from '../components/Footer';
 import ChatLauncher from '../components/ChatLauncher';
@@ -13,14 +13,7 @@ import MenuButton from '../components/MenuButton';
 const parentMenu = menus['parent-student'];
 const schoolInfoMenu = menus['school-info'];
 
-const quickResponses = [
-    "What are the school hours?",
-    "How do I report an absence?",
-    "What's for lunch today?",
-    "When is the next parent evening?",
-    "How do I contact my child's teacher?",
-    "What's the homework policy?"
-];
+
 
 export default function SchoolAssistantWidget() {
     const [open, setOpen] = useState(false);
@@ -37,7 +30,7 @@ export default function SchoolAssistantWidget() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const isMobile = useIsMobile();
-    
+
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -99,7 +92,12 @@ export default function SchoolAssistantWidget() {
     );
 
     const handleItemClick = (item: any) => {
-        setSelectedItem(item);
+        if (item.url) {
+            window.open(item.url, '_blank', 'noopener,noreferrer');
+        } else {
+            // For items without URL, show inside widget
+            setSelectedItem(item);
+        }
     };
 
     const simulateBotResponse = useCallback((userText: string) => {
@@ -272,7 +270,7 @@ export default function SchoolAssistantWidget() {
 
                                     {schoolInfoMenu.map((item, idx) => {
                                         return (
-                                           
+
                                             <MenuButton
                                                 key={idx}
                                                 id={item.id}

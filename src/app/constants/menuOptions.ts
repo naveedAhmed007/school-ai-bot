@@ -1,13 +1,21 @@
 // types.ts
 export type MenuCategory = 'parent-student' | 'school-info'; // extendable
 
+import CanteenMenu from "../components/CanteenMenu";
+import ContactInformation from "../components/ContactInformation";
 import SchoolCalender from "../components/SchoolCalender";
+import UniformInformation from "../components/UniformInformation";
+import PoliciesAndProcedures from "../components/PoliciesAndProcedures";
+type PoliciesAndProceduresType = typeof PoliciesAndProcedures;
 // menuOptions.ts
 import { StudentParentMenuOption, SchoolInformationMenuItem } from "../types";
 import {
     BookOpen, Heart, Users, AlertCircle, MessageCircle,
-    Calendar, Clock, Phone
+    Calendar, Clock, Phone, Shirt
 } from 'lucide-react';
+import { POLICY_URL } from "./urls";
+
+
 
 export const menus = {
     'parent-student': [
@@ -22,10 +30,11 @@ export const menus = {
     'school-info': [
         { id: 'school-calendar', name: 'School Calendar', icon: Calendar, component: SchoolCalender },
         { id: 'term-dates', name: 'Term Dates', icon: Clock, component: SchoolCalender },
-        { id: "uniform-Information", name: 'Uniform Information', icon: Users, content: 'All students must wear uniforms...' },
-        { id: 'canteen-menu', name: 'Canteen Menu', icon: BookOpen, component: SchoolCalender },
-        { id: 'contact-info', name: 'Contact Information', icon: Phone, component: SchoolCalender },
-        { id: 'policies', name: 'Policies & Procedures', icon: BookOpen, component: SchoolCalender },
+        { id: "uniform-Information", name: 'Uniform Information', icon: Shirt, component: UniformInformation },
+        { id: 'canteen-menu', name: 'Canteen Menu', icon: BookOpen, component: CanteenMenu },
+        { id: 'contact-info', name: 'Contact Information', icon: Phone, component: ContactInformation },
+        {id: 'policies',name: 'Policies & Procedures',icon: BookOpen,url:POLICY_URL}
+
     ] satisfies SchoolInformationMenuItem[]
 };
 

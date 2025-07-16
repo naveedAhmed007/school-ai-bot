@@ -7,4 +7,5 @@ export const TEXTS = {
     teacherAccessLogin: 'Teacher Access Login',
     selectAvatarPrompt: "Choose an avatar to get started:",
     widgetFooterText:"School Assistant. All rights reserved.",
+    uniformYearGroupPrompt: "Which year group do you need uniform information for?",
 }

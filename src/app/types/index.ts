@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { JSX, ReactElement } from 'react';
 import { LucideIcon } from 'lucide-react';
 
 export interface Avatar {
@@ -23,6 +23,7 @@ export interface SchoolInformationMenuItem {
     id: string;
     name: string;
     icon: LucideIcon;
-    component?: React.FC;
+    component?: React.ComponentType<any> | (() => JSX.Element);
     content?: string;
+     url?: string,
 }
