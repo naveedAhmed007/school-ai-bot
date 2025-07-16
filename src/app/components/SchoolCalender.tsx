@@ -1,12 +1,20 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import listPlugin from '@fullcalendar/list';
 import dayjs from 'dayjs';
 import { useIsMobile } from '../hooks/useIsMobile';
+import Loader from './Loader';
 
 export default function SchoolCalendar() {
   const isMobile = useIsMobile();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+
+  // ─────────────────────────────────────────────────────────────
+  // DATE RANGE & INITIAL DATE
+  // ─────────────────────────────────────────────────────────────
   const today = dayjs();
   const initial = today.format('YYYY-MM-DD');
   const validRange = useMemo(
@@ -17,60 +25,127 @@ export default function SchoolCalendar() {
     [today]
   );
 
-  const events = [
-    { title: 'Very Long Event Title That Might Get Cut Off', date: '2025-07-15' },
-    { title: 'Event 2', date: '2025-07-18' },
-  ];
+  // ─────────────────────────────────────────────────────────────
+  // GOOGLE CALENDAR FETCH
+  // ─────────────────────────────────────────────────────────────
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_API_KEY;
+  const calendarId = 'naveed.ahmed123456654321@gmail.com';
 
-  const renderEventContent = useCallback(
-    (info: any) => (
-      <div
-        title={isMobile ? undefined : info.event.title}
-        style={
-          isMobile
-            ? {
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 3,
-              overflow: 'hidden',
-              whiteSpace: 'normal',
-              fontSize: '10px',
-              lineHeight: '1.2',
-              wordBreak: 'break-word',
-              padding: '1px 2px',
-            }
-            : {
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              maxWidth: '100%',
-              fontSize: '10px',
-              wordBreak: 'break-word',
-            }
+  useEffect(() => {
+    if (!apiKey || !calendarId) {
+      console.warn('Missing API key or calendar ID');
+      return;
+    }
+
+    (async () => {
+      try {
+        const timeMin = dayjs(validRange.start).startOf('day').toISOString();
+        const timeMax = dayjs(validRange.end).endOf('day').toISOString();
+
+        const res = await fetch(
+          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
+            calendarId,
+          )}/events?key=${apiKey}&singleEvents=true&orderBy=startTime&timeMin=${timeMin}&timeMax=${timeMax}`,
+        );
+
+        const data = await res.json();
+        if (data.items) {
+          const formatted = data.items.map((ev: any) => ({
+            id: ev.id,
+            title: ev.summary || 'Untitled',
+            start: ev.start.dateTime || ev.start.date,
+            end: ev.end?.dateTime || ev.end?.date,
+            allDay: !!ev.start.date, // true if only a "date" field (all‑day)
+          }));
+          setEvents(formatted);
+
         }
-      >
-        {info.event.title}
-      </div>
-    ),
+      } catch (err) {
+        console.error('Error fetching calendar events:', err);
+      }
+      finally {
+        setLoading(false);
+      }
+    })();
+  }, [apiKey, calendarId, validRange]);
+
+  // ─────────────────────────────────────────────────────────────
+  // EVENT RENDERING (adds timeText)
+  // ─────────────────────────────────────────────────────────────
+  const renderEventContent = useCallback(
+    (info: any) => {
+      const timeText = info.timeText && !info.event.allDay ? info.timeText : 'All Day';
+
+      return (
+        <div
+          title={isMobile ? undefined : info.event.title}
+          style={{
+            fontSize: 10,
+            lineHeight: '1.2',
+            wordBreak: 'break-word',
+            padding: '2px 4px',
+            whiteSpace: 'normal',
+          }}
+        >
+          <div style={{ fontWeight: 'bold' }}>{timeText}</div>
+          <div>{info.event.title}</div>
+        </div>
+      );
+    },
     [isMobile]
   );
+  // ─────────────────────────────────────────────────────────────
+  // PROMINENT BLUE STYLE
+  // ─────────────────────────────────────────────────────────────
+  const handleEventDidMount = useCallback((info: any) => {
+    info.el.style.backgroundColor = '#007bff';
+    info.el.style.color = 'white';
+    info.el.style.fontWeight = 'bold';
+    info.el.style.borderRadius = '6px';
+    info.el.style.boxShadow = '0 2px 6px rgba(0,0,0,0.15)';
+    info.el.style.padding = '2px 6px';
+  }, []);
 
+  if (loading) {
+    // A fullscreen, perfectly‑centered loader
+    return (
+      <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+        <Loader size={160} />
+      </div>
+    );
+  }
   return (
-    <div style={{ maxWidth:"auto", margin: '0 auto' }}>
+    <div className="relative w-full">
+      <style>{`
+      .fc-list-table .fc-list-event:hover td {
+        background-color: #007bff !important;
+      }
+    `}</style>
+
+
       <FullCalendar
-        plugins={[dayGridPlugin]}
-        initialView="dayGridMonth"
-        initialDate={initial}
+        plugins={[dayGridPlugin, listPlugin]}
+        initialView={isMobile ? 'listMonth' : 'dayGridMonth'}
         validRange={validRange}
         events={events}
         eventContent={renderEventContent}
+        eventDidMount={handleEventDidMount}
+        displayEventEnd={true}
+        eventTimeFormat={{ hour: 'numeric', minute: '2-digit', hour12: true }}
         dayMaxEventRows={2}
         height={isMobile ? 'auto' : 600}
         titleFormat={{ year: '2-digit', month: 'short' }}
         fixedWeekCount={false}
         showNonCurrentDates={true}
-        headerToolbar={{ left: 'prev', center: 'title', right: 'next' }}
+        headerToolbar={{
+          left: 'prev,next',
+          center: 'title',
+          right: 'dayGridMonth,listMonth',
+        }}
       />
+
+
     </div>
   );
+
 }

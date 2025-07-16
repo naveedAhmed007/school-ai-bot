@@ -37,6 +37,7 @@ export default function SchoolAssistantWidget() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const isMobile = useIsMobile();
+    
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -271,20 +272,13 @@ export default function SchoolAssistantWidget() {
 
                                     {schoolInfoMenu.map((item, idx) => {
                                         return (
-                                            // <button
-                                            //     key={idx}
-                                            //     onClick={() => handleItemClick(item)}
-                                            //     className="w-full text-left px-4 py-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-blue-50 hover:shadow-md transition-all flex items-center gap-3"
-                                            // >
-                                            //     <Icon size={18} className="text-blue-600" />
-                                            //     <p className="text-sm font-medium">{item.name}</p>
-                                            // </button>
+                                           
                                             <MenuButton
                                                 key={idx}
                                                 id={item.id}
                                                 name={item.name}
                                                 Icon={item.icon}
-                                                onClick={handleItemClick.bind(null,item)}
+                                                onClick={handleItemClick.bind(null, item)}
                                             />
                                         );
                                     })}
