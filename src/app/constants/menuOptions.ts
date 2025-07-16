@@ -8,10 +8,14 @@ import UniformInformation from "../components/UniformInformation";
 import PoliciesAndProcedures from "../components/PoliciesAndProcedures";
 type PoliciesAndProceduresType = typeof PoliciesAndProcedures;
 // menuOptions.ts
-import { StudentParentMenuOption, SchoolInformationMenuItem } from "../types";
+import { StudentParentMenuOption, SchoolInformationMenuItem, WellbeingSupportMenuItem } from "../types";
 import {
     BookOpen, Heart, Users, AlertCircle, MessageCircle,
-    Calendar, Clock, Phone, Shirt
+    Calendar, Clock, Phone, Shirt,
+    HeartIcon,
+    Brain,
+    MessageSquareWarning,
+    BookOpenCheck
 } from 'lucide-react';
 import { POLICY_URL } from "./urls";
 
@@ -33,9 +37,37 @@ export const menus = {
         { id: "uniform-Information", name: 'Uniform Information', icon: Shirt, component: UniformInformation },
         { id: 'canteen-menu', name: 'Canteen Menu', icon: BookOpen, component: CanteenMenu },
         { id: 'contact-info', name: 'Contact Information', icon: Phone, component: ContactInformation },
-        {id: 'policies',name: 'Policies & Procedures',icon: BookOpen,url:POLICY_URL}
+        { id: 'policies', name: 'Policies & Procedures', icon: BookOpen, url: POLICY_URL }
 
-    ] satisfies SchoolInformationMenuItem[]
+    ] satisfies SchoolInformationMenuItem[],
+
+    'wellbeing-flow': [
+        {
+            id: 'urgent',
+            name: 'Urgent Help Needed',
+            icon: AlertCircle,
+        },
+        {
+            id: 'mental-health',
+            name: 'Mental Health Support',
+            icon: Brain,
+        },
+        {
+            id: 'bullying',
+            name: 'Bullying Report',
+            icon: MessageSquareWarning,
+        },
+        {
+            id: 'academic',
+            name: 'Academic Support',
+            icon: BookOpenCheck,
+        },
+        {
+            id: 'family',
+            name: 'Family Support',
+            icon: Users,
+        },
+    ] satisfies WellbeingSupportMenuItem[],
 };
 
 // const teacherPortalMenu: SubMenuItem[] = [

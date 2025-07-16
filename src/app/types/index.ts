@@ -25,5 +25,27 @@ export interface SchoolInformationMenuItem {
     icon: LucideIcon;
     component?: React.ComponentType<any> | (() => JSX.Element);
     content?: string;
-     url?: string,
+    url?: string,
+}
+
+export interface WellbeingSupportMenuItem {
+    id: 'urgent' | 'mental-health' | 'bullying' | 'academic' | 'family';
+    name: string;
+    icon: LucideIcon;
+    component?: React.ComponentType<any> | (() => JSX.Element);
+    content?: string;
+    url?: string;
+}
+
+export interface WellbeingAssessmentChoice {
+    who: 'self' | 'child';
+}
+
+export interface BullyingReportFormValues {
+    anonymous: boolean;
+    description: string;
+    date?: string; // YYYY-MM-DD
+    individuals?: string;
+    wantsFollowUp: boolean;
+    contactMethod?: 'email' | 'phone' | 'in-app';
 }

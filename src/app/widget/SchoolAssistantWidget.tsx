@@ -12,6 +12,8 @@ import MenuButton from '../components/MenuButton';
 
 const parentMenu = menus['parent-student'];
 const schoolInfoMenu = menus['school-info'];
+const wellbeingFlowMenu = menus['wellbeing-flow'];
+
 
 
 
@@ -30,6 +32,12 @@ export default function SchoolAssistantWidget() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const isMobile = useIsMobile();
+
+    const subMenuMap: Record<string, any[]> = {
+        'school-info': schoolInfoMenu,
+        'wellbeing': wellbeingFlowMenu,
+    };
+
 
 
     useEffect(() => {
@@ -161,8 +169,10 @@ export default function SchoolAssistantWidget() {
             } as React.CSSProperties;
         }
     };
-
+    const currentSubMenu = selectedMenu ? subMenuMap[selectedMenu] || [] : [];
     const widgetStyle = getWidgetSize();
+
+
 
     return (
         <div
@@ -216,6 +226,7 @@ export default function SchoolAssistantWidget() {
                                     </div>
 
                                     <div className="space-y-4" role="menu">
+
                                         {parentMenu.map((menu) => {
                                             const Icon = menu.icon;
                                             return (
@@ -268,18 +279,23 @@ export default function SchoolAssistantWidget() {
                                         </button>
                                     </div>
 
-                                    {schoolInfoMenu.map((item, idx) => {
-                                        return (
 
+
+                                    {currentSubMenu.length > 0 ? (
+                                        currentSubMenu.map((item, idx) => (
                                             <MenuButton
                                                 key={idx}
                                                 id={item.id}
                                                 name={item.name}
                                                 Icon={item.icon}
-                                                onClick={handleItemClick.bind(null, item)}
+                                                onClick={() => handleItemClick(item)}
                                             />
-                                        );
-                                    })}
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-gray-600">
+                                            No submenu available for this section yet.
+                                        </p>
+                                    )}
                                 </div>
                             )}
                         </div>
