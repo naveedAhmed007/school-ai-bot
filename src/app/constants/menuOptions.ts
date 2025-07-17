@@ -5,19 +5,20 @@ import CanteenMenu from "../components/CanteenMenu";
 import ContactInformation from "../components/ContactInformation";
 import SchoolCalender from "../components/SchoolCalender";
 import UniformInformation from "../components/UniformInformation";
-import PoliciesAndProcedures from "../components/PoliciesAndProcedures";
-type PoliciesAndProceduresType = typeof PoliciesAndProcedures;
 // menuOptions.ts
-import { StudentParentMenuOption, SchoolInformationMenuItem, WellbeingSupportMenuItem } from "../types";
+import { StudentParentMenuOption, SchoolInformationMenuItem, WellbeingSupportMenuItem, WellbeingInitialAssessmentMenuItem } from "../types";
 import {
     BookOpen, Heart, Users, AlertCircle, MessageCircle,
     Calendar, Clock, Phone, Shirt,
-    HeartIcon,
     Brain,
     MessageSquareWarning,
-    BookOpenCheck
+    BookOpenCheck,
+    User
 } from 'lucide-react';
 import { POLICY_URL } from "./urls";
+import UrgentHelp from "../components/UrgentHelp";
+import MentalHealthSupport from "../components/MentalHealthSupport";
+import BullyingReportFlow from "../components/BullyingReportFlow";
 
 
 
@@ -46,16 +47,19 @@ export const menus = {
             id: 'urgent',
             name: 'Urgent Help Needed',
             icon: AlertCircle,
+            component:UrgentHelp
         },
         {
             id: 'mental-health',
             name: 'Mental Health Support',
             icon: Brain,
+            component:MentalHealthSupport
         },
         {
             id: 'bullying',
             name: 'Bullying Report',
             icon: MessageSquareWarning,
+            component:BullyingReportFlow
         },
         {
             id: 'academic',
@@ -68,6 +72,13 @@ export const menus = {
             icon: Users,
         },
     ] satisfies WellbeingSupportMenuItem[],
+
+    'wellbeing-init': [
+        { id: 'for-myself', name: 'For Myself', icon: User },
+        { id: 'for-my-child', name: 'For My Child', icon: Users },
+    ] satisfies WellbeingInitialAssessmentMenuItem[],
+
+
 };
 
 // const teacherPortalMenu: SubMenuItem[] = [

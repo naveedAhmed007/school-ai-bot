@@ -17,6 +17,8 @@ export interface StudentParentMenuOption {
     id: string;
     name: string;
     icon: LucideIcon;
+    component?: React.ComponentType<any> | (() => JSX.Element);
+
 }
 
 export interface SchoolInformationMenuItem {
@@ -48,4 +50,9 @@ export interface BullyingReportFormValues {
     individuals?: string;
     wantsFollowUp: boolean;
     contactMethod?: 'email' | 'phone' | 'in-app';
+}
+export interface WellbeingInitialAssessmentMenuItem {
+    id: 'for-myself' | 'for-my-child';
+    name: string;
+    icon?: LucideIcon;
 }

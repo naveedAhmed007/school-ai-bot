@@ -13,36 +13,36 @@ import MenuButton from '../components/MenuButton';
 const parentMenu = menus['parent-student'];
 const schoolInfoMenu = menus['school-info'];
 const wellbeingFlowMenu = menus['wellbeing-flow'];
-
-
-
+const wellbeingInitMenu = menus['wellbeing-init'];
 
 export default function SchoolAssistantWidget() {
     const [open, setOpen] = useState(false);
-    const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+    // Instead of selectedMenu, use currentMenu to track top-level menu category
+    const [currentMenu, setCurrentMenu] = useState<'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow'>('parent-student');
+
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [avatarSelected, setAvatarSelected] = useState<number | null>(null);
     const [showAvatarSelection, setShowAvatarSelection] = useState(false);
     const [chatMode, setChatMode] = useState(false);
-    const [messages, setMessages] = useState<Array<{ id: number, text: string, sender: 'user' | 'bot', timestamp: Date }>>([]);
-    const [inputMessage, setInputMessage] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const isMobile = useIsMobile();
 
+    // Map menus for easy access
     const subMenuMap: Record<string, any[]> = {
+        'parent-student': parentMenu,
         'school-info': schoolInfoMenu,
-        'wellbeing': wellbeingFlowMenu,
+        'wellbeing-init': wellbeingInitMenu,
+        'wellbeing-flow': wellbeingFlowMenu,
+    };
+    const menuHeadings: Record<string, string> = {
+        'parent-student': 'Main Menu',
+        'school-info': 'School Information',
+        'wellbeing-init': 'Wellbeing Initial Assessment',
+        'wellbeing-flow': 'Wellbeing Support Flow',
     };
 
-
-
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
 
     useEffect(() => {
         if (open && isMobile) {
@@ -75,63 +75,45 @@ export default function SchoolAssistantWidget() {
         }
     }, [avatarSelected]);
 
-    const handleMenuClick = (txt: string) => {
-        if (txt === 'question') {
+    const handleMenuClick = (id: string) => {
+        if (id === 'question') {
             setChatMode(true);
-            setSelectedMenu(null);
+            setSelectedItem(null);
+        } else if (id === 'wellbeing') {
+            // Open initial assessment menu
+            setCurrentMenu('wellbeing-init');
+            setSelectedItem(null);
+            setChatMode(false);
         } else {
-            setSelectedMenu(txt);
+            setCurrentMenu(id as any);
+            setSelectedItem(null);
             setChatMode(false);
         }
     };
-    const handleQuickResponse = (text: string) => {
-        handleSendMessage(text);
-    };
 
-    const handleSendMessage = useCallback(
-        (forcedText?: string) => {
-            const text = forcedText ?? inputMessage;
-            if (!text.trim()) return;
-            setMessages((m) => [...m, { id: Date.now(), text, sender: 'user', timestamp: new Date() }]);
-            setInputMessage('');
-            simulateBotResponse(text);
-        },
-        [inputMessage]
-    );
-
-    const handleItemClick = (item: any) => {
-        if (item.url) {
+    const handleSubMenuClick = (item: any) => {
+        if (currentMenu === 'wellbeing-init') {
+            if (item.id === 'for-my-child') {
+                // Navigate to wellbeing flow menu
+                setCurrentMenu('wellbeing-flow');
+                setSelectedItem(null);
+            } else if (item.id === 'for-myself') {
+                // Show age-appropriate resources (replace with real navigation)
+                alert('Redirect to age-appropriate resources screen');
+            }
+        } else if (item.url) {
             window.open(item.url, '_blank', 'noopener,noreferrer');
+        } else if (item.component) {
+            setSelectedItem(item);
         } else {
-            // For items without URL, show inside widget
+            // default fallback
             setSelectedItem(item);
         }
     };
 
-    const simulateBotResponse = useCallback((userText: string) => {
-        setIsTyping(true);
-        setTimeout(() => {
-            const lower = userText.toLowerCase();
-            let reply = "I'm here to help! Let me find that information for you.";
-            if (lower.includes('hours')) reply = 'School hours are 8:30 AM - 3:30 PM Monday to Friday.';
-            else if (lower.includes('absence')) reply = 'To report an absence, call 01234 567890 before 9 AM or use our online form.';
-            else if (lower.includes('lunch')) reply = "Today's lunch: chicken curry, vegetarian pasta, salad bar. £3.50.";
-            else if (lower.includes('parent evening')) reply = 'Next parent evening: Thu 14 Mar 2025, 4–7 PM.';
-            else if (lower.includes('teacher')) reply = "Contact teachers via the app, email, or phone 01234 567890.";
-            else if (lower.includes('homework')) reply = 'Homework: 30 min (Y7‑9), 45 min (Y10‑11) per subject.';
-            setMessages((m) => [...m, { id: Date.now(), text: reply, sender: 'bot', timestamp: new Date() }]);
-            setIsTyping(false);
-        }, 1000 + Math.random() * 1000);
-    }, []);
-
     const resetMenu = () => {
-        setSelectedMenu(null);
         setSelectedItem(null);
-    };
-
-    const resetToMain = () => {
-        setSelectedMenu(null);
-        setSelectedItem(null);
+        setCurrentMenu('parent-student');
         setChatMode(false);
     };
 
@@ -169,10 +151,10 @@ export default function SchoolAssistantWidget() {
             } as React.CSSProperties;
         }
     };
-    const currentSubMenu = selectedMenu ? subMenuMap[selectedMenu] || [] : [];
+
+    const currentMenuItems = subMenuMap[currentMenu] || [];
+
     const widgetStyle = getWidgetSize();
-
-
 
     return (
         <div
@@ -206,12 +188,10 @@ export default function SchoolAssistantWidget() {
                         <div className="flex-1 flex flex-col min-h-0">{/* ...chat UI here... */}</div>
                     ) : (
                         <div className="flex-1 overflow-auto p-4 text-gray-700">
-                            {!selectedMenu ? (
+                            {!currentMenu || currentMenu === 'parent-student' ? (
                                 <>
                                     {selectedAvatarObj && (
-                                        <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden">
-                                            {selectedAvatarObj.svg}
-                                        </div>
+                                        <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden">{selectedAvatarObj.svg}</div>
                                     )}
                                     <div className="text-center mb-6">
                                         <h2 className="text-xl font-semibold text-blue-700">👋 Hi! I'm your School Assistant</h2>
@@ -226,19 +206,9 @@ export default function SchoolAssistantWidget() {
                                     </div>
 
                                     <div className="space-y-4" role="menu">
-
-                                        {parentMenu.map((menu) => {
-                                            const Icon = menu.icon;
-                                            return (
-                                                <MenuButton
-                                                    key={menu.id}
-                                                    id={menu.id}
-                                                    name={menu.name}
-                                                    Icon={menu.icon}
-                                                    onClick={handleMenuClick}
-                                                />
-                                            );
-                                        })}
+                                        {parentMenu.map((menu) => (
+                                            <MenuButton key={menu.id} id={menu.id} name={menu.name} Icon={menu.icon} onClick={handleMenuClick} />
+                                        ))}
                                     </div>
                                 </>
                             ) : selectedItem ? (
@@ -257,44 +227,27 @@ export default function SchoolAssistantWidget() {
                                         {selectedItem.component ? (
                                             <selectedItem.component />
                                         ) : (
-                                            <p className="text-sm text-gray-700 whitespace-pre-line">
-                                                {selectedItem.content ?? 'No content provided.'}
-                                            </p>
+                                            <p className="text-sm text-gray-700 whitespace-pre-line">{selectedItem.content ?? 'No content provided.'}</p>
                                         )}
                                     </div>
-
-
                                 </div>
                             ) : (
                                 <div className="space-y-3">
                                     <div className="mb-4 flex justify-between items-center">
                                         <h3 className="text-base font-semibold text-blue-700">
-                                            {parentMenu.find(m => m.id === selectedMenu)?.name}
+                                            {menuHeadings[currentMenu] || ''}
                                         </h3>
-                                        <button
-                                            onClick={resetMenu}
-                                            className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
-                                        >
+                                        <button onClick={resetMenu} className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
                                             ← Back
                                         </button>
                                     </div>
 
-
-
-                                    {currentSubMenu.length > 0 ? (
-                                        currentSubMenu.map((item, idx) => (
-                                            <MenuButton
-                                                key={idx}
-                                                id={item.id}
-                                                name={item.name}
-                                                Icon={item.icon}
-                                                onClick={() => handleItemClick(item)}
-                                            />
+                                    {currentMenuItems.length > 0 ? (
+                                        currentMenuItems.map((item, idx) => (
+                                            <MenuButton key={idx} id={item.id} name={item.name} Icon={item.icon} onClick={() => handleSubMenuClick(item)} />
                                         ))
                                     ) : (
-                                        <p className="text-sm text-gray-600">
-                                            No submenu available for this section yet.
-                                        </p>
+                                        <p className="text-sm text-gray-600">No submenu available for this section yet.</p>
                                     )}
                                 </div>
                             )}
