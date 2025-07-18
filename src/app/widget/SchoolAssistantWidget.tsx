@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import AvatarSelector from '../components/AvatarSelector';
 import { Avatar } from '../types';
@@ -9,21 +9,29 @@ import Footer from '../components/Footer';
 import ChatLauncher from '../components/ChatLauncher';
 import { useIsMobile } from '../hooks/useIsMobile';
 import MenuButton from '../components/MenuButton';
+import ContactDetailsForm from '../components/ContactDetailsForm';
+import CareersUniversities from '../components/CareersUniversities';
+
 
 const parentMenu = menus['parent-student'];
 const schoolInfoMenu = menus['school-info'];
 const wellbeingFlowMenu = menus['wellbeing-flow'];
 const wellbeingInitMenu = menus['wellbeing-init'];
+const parentResourcesMenu = menus['parent-Resources']
 
 export default function SchoolAssistantWidget() {
+
+
     const [open, setOpen] = useState(false);
     // Instead of selectedMenu, use currentMenu to track top-level menu category
-    const [currentMenu, setCurrentMenu] = useState<'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow'>('parent-student');
+    const [currentMenu, setCurrentMenu] = useState<'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow' | 'parent-Resources'>('parent-student');
 
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [avatarSelected, setAvatarSelected] = useState<number | null>(null);
     const [showAvatarSelection, setShowAvatarSelection] = useState(false);
     const [chatMode, setChatMode] = useState(false);
+    const [showIncidentReport, setShowIncidentReport] = useState(false);
+    const [showCareers, setShowCareers] = useState(false)
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -35,12 +43,14 @@ export default function SchoolAssistantWidget() {
         'school-info': schoolInfoMenu,
         'wellbeing-init': wellbeingInitMenu,
         'wellbeing-flow': wellbeingFlowMenu,
+        'parent-Resources': parentResourcesMenu
     };
     const menuHeadings: Record<string, string> = {
         'parent-student': 'Main Menu',
         'school-info': 'School Information',
         'wellbeing-init': 'Wellbeing Initial Assessment',
         'wellbeing-flow': 'Wellbeing Support Flow',
+        'parent-Resources': "Parent Resources"
     };
 
 
@@ -78,16 +88,42 @@ export default function SchoolAssistantWidget() {
     const handleMenuClick = (id: string) => {
         if (id === 'question') {
             setChatMode(true);
+            setShowIncidentReport(false)
+            setShowCareers(false)
             setSelectedItem(null);
         } else if (id === 'wellbeing') {
             // Open initial assessment menu
             setCurrentMenu('wellbeing-init');
             setSelectedItem(null);
             setChatMode(false);
-        } else {
+            setShowIncidentReport(false);
+            setShowCareers(false)
+
+        }
+        else if (id === 'report') {
+            setSelectedItem(null);
+            setChatMode(false);
+            setShowIncidentReport(true);
+            setShowCareers(false)
+
+
+        }
+        else if (id === 'careers') {
+            setSelectedItem(null);
+            setChatMode(false);
+            setShowIncidentReport(false);
+            setShowCareers(true)
+
+
+        }
+
+
+        else {
             setCurrentMenu(id as any);
             setSelectedItem(null);
             setChatMode(false);
+            setShowIncidentReport(false);
+            setShowCareers(false)
         }
     };
 
@@ -106,6 +142,7 @@ export default function SchoolAssistantWidget() {
         } else if (item.component) {
             setSelectedItem(item);
         } else {
+
             // default fallback
             setSelectedItem(item);
         }
@@ -115,6 +152,8 @@ export default function SchoolAssistantWidget() {
         setSelectedItem(null);
         setCurrentMenu('parent-student');
         setChatMode(false);
+        setShowIncidentReport(false)
+        setShowCareers(false)
     };
 
     const selectedAvatarObj: Avatar | null = avatarSelected
@@ -154,6 +193,15 @@ export default function SchoolAssistantWidget() {
 
     const currentMenuItems = subMenuMap[currentMenu] || [];
 
+    const handleBackFromIncidentForm = () => {
+        setShowIncidentReport(false);
+    };
+
+    const handleBackFromCareers = () => {
+        setShowCareers(false);
+    };
+
+
     const widgetStyle = getWidgetSize();
 
     return (
@@ -186,73 +234,82 @@ export default function SchoolAssistantWidget() {
                     ) : chatMode ? (
                         /* --- Chat mode view (unchanged) --- */
                         <div className="flex-1 flex flex-col min-h-0">{/* ...chat UI here... */}</div>
-                    ) : (
-                        <div className="flex-1 overflow-auto p-4 text-gray-700">
-                            {!currentMenu || currentMenu === 'parent-student' ? (
-                                <>
-                                    {selectedAvatarObj && (
-                                        <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden">{selectedAvatarObj.svg}</div>
-                                    )}
-                                    <div className="text-center mb-6">
-                                        <h2 className="text-xl font-semibold text-blue-700">👋 Hi! I'm your School Assistant</h2>
-                                        <p className="text-sm text-gray-600 mt-1">How can I help you today?</p>
-                                        <button
-                                            onClick={() => setShowAvatarSelection(true)}
-                                            className="inline-flex items-center gap-2 px-3 py-1 text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded transition-colors"
-                                        >
-                                            <User size={18} />
-                                            <span className="text-sm font-medium">Choose Your Avatar</span>
-                                        </button>
-                                    </div>
 
-                                    <div className="space-y-4" role="menu">
-                                        {parentMenu.map((menu) => (
-                                            <MenuButton key={menu.id} id={menu.id} name={menu.name} Icon={menu.icon} onClick={handleMenuClick} />
-                                        ))}
-                                    </div>
-                                </>
-                            ) : selectedItem ? (
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <button
-                                            onClick={() => setSelectedItem(null)}
-                                            className="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100"
-                                        >
-                                            <ArrowLeft size={18} />
-                                        </button>
-                                        <h3 className="text-lg font-semibold text-blue-700">{selectedItem.name}</h3>
-                                    </div>
 
-                                    <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                                        {selectedItem.component ? (
-                                            <selectedItem.component />
+                    )
+                        : showIncidentReport ? (
+                            <ContactDetailsForm onBack={handleBackFromIncidentForm} />
+                        )
+                            : showCareers ? (
+                                <CareersUniversities onBack={handleBackFromCareers} />
+                            )
+                                : (
+                                    <div className="flex-1 overflow-auto p-4 text-gray-700">
+                                        {!currentMenu || currentMenu === 'parent-student' ? (
+                                            <>
+                                                {selectedAvatarObj && (
+                                                    <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden">{selectedAvatarObj.svg}</div>
+                                                )}
+                                                <div className="text-center mb-6">
+                                                    <h2 className="text-xl font-semibold text-blue-700">👋 Hi! I'm your School Assistant</h2>
+                                                    <p className="text-sm text-gray-600 mt-1">How can I help you today?</p>
+                                                    <button
+                                                        onClick={() => setShowAvatarSelection(true)}
+                                                        className="inline-flex items-center gap-2 px-3 py-1 text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded transition-colors"
+                                                    >
+                                                        <User size={18} />
+                                                        <span className="text-sm font-medium">Choose Your Avatar</span>
+                                                    </button>
+                                                </div>
+
+                                                <div className="space-y-4" role="menu">
+                                                    {parentMenu.map((menu) => (
+                                                        <MenuButton key={menu.id} id={menu.id} name={menu.name} Icon={menu.icon} onClick={handleMenuClick} />
+                                                    ))}
+                                                </div>
+                                            </>
+                                        ) : selectedItem ? (
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <button
+                                                        onClick={() => setSelectedItem(null)}
+                                                        className="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100"
+                                                    >
+                                                        <ArrowLeft size={18} />
+                                                    </button>
+                                                    <h3 className="text-lg font-semibold text-blue-700">{selectedItem.name}</h3>
+                                                </div>
+
+                                                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                                    {selectedItem.component ? (
+                                                        <selectedItem.component />
+                                                    ) : (
+                                                        <p className="text-sm text-gray-700 whitespace-pre-line">{selectedItem.content ?? 'No content provided.'}</p>
+                                                    )}
+                                                </div>
+                                            </div>
                                         ) : (
-                                            <p className="text-sm text-gray-700 whitespace-pre-line">{selectedItem.content ?? 'No content provided.'}</p>
+                                            <div className="space-y-3">
+                                                <div className="mb-4 flex justify-between items-center">
+                                                    <h3 className="text-base font-semibold text-blue-700">
+                                                        {menuHeadings[currentMenu] || ''}
+                                                    </h3>
+                                                    <button onClick={resetMenu} className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
+                                                        ← Back
+                                                    </button>
+                                                </div>
+
+                                                {currentMenuItems.length > 0 ? (
+                                                    currentMenuItems.map((item, idx) => (
+                                                        <MenuButton key={idx} id={item.id} name={item.name} Icon={item.icon} onClick={() => handleSubMenuClick(item)} />
+                                                    ))
+                                                ) : (
+                                                    <p className="text-sm text-gray-600">No submenu available for this section yet.</p>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
-                                </div>
-                            ) : (
-                                <div className="space-y-3">
-                                    <div className="mb-4 flex justify-between items-center">
-                                        <h3 className="text-base font-semibold text-blue-700">
-                                            {menuHeadings[currentMenu] || ''}
-                                        </h3>
-                                        <button onClick={resetMenu} className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
-                                            ← Back
-                                        </button>
-                                    </div>
-
-                                    {currentMenuItems.length > 0 ? (
-                                        currentMenuItems.map((item, idx) => (
-                                            <MenuButton key={idx} id={item.id} name={item.name} Icon={item.icon} onClick={() => handleSubMenuClick(item)} />
-                                        ))
-                                    ) : (
-                                        <p className="text-sm text-gray-600">No submenu available for this section yet.</p>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                )}
 
                     <Footer />
                 </div>

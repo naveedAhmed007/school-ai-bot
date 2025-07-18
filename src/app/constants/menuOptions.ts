@@ -1,4 +1,3 @@
-// types.ts
 export type MenuCategory = 'parent-student' | 'school-info'; // extendable
 
 import CanteenMenu from "../components/CanteenMenu";
@@ -13,12 +12,18 @@ import {
     Brain,
     MessageSquareWarning,
     BookOpenCheck,
-    User
+    User,
+    ShieldCheck,
+    Link
 } from 'lucide-react';
 import { POLICY_URL } from "./urls";
 import UrgentHelp from "../components/UrgentHelp";
 import MentalHealthSupport from "../components/MentalHealthSupport";
 import BullyingReportFlow from "../components/BullyingReportFlow";
+import LearningSupportAtHome from "../components/LearningSupportAtHome";
+import OnlineSafetyGuide from "../components/OnlineSafetyGuide";
+import ParentWorkshop from "../components/ParentWorkshop";
+import ParentCommunity from "../components/ParentCommunity";
 
 
 
@@ -26,7 +31,7 @@ export const menus = {
     'parent-student': [
         { id: 'school-info', name: 'School Information', icon: BookOpen },
         { id: 'wellbeing', name: 'Wellbeing & Support', icon: Heart },
-        { id: 'parent-resources', name: 'Parent Resources', icon: Users },
+        { id: 'parent-Resources', name: 'Parent Resources', icon: Users },
         { id: 'careers', name: 'Careers & Universities (6th Form)', icon: BookOpen },
         { id: 'report', name: 'Report Incident/Absence', icon: AlertCircle },
         { id: 'question', name: 'Ask a Question', icon: MessageCircle },
@@ -47,19 +52,19 @@ export const menus = {
             id: 'urgent',
             name: 'Urgent Help Needed',
             icon: AlertCircle,
-            component:UrgentHelp
+            component: UrgentHelp
         },
         {
             id: 'mental-health',
             name: 'Mental Health Support',
             icon: Brain,
-            component:MentalHealthSupport
+            component: MentalHealthSupport
         },
         {
             id: 'bullying',
             name: 'Bullying Report',
             icon: MessageSquareWarning,
-            component:BullyingReportFlow
+            component: BullyingReportFlow
         },
         {
             id: 'academic',
@@ -77,6 +82,34 @@ export const menus = {
         { id: 'for-myself', name: 'For Myself', icon: User },
         { id: 'for-my-child', name: 'For My Child', icon: Users },
     ] satisfies WellbeingInitialAssessmentMenuItem[],
+    'parent-Resources': [
+        {
+            id: 'learning-home',
+            name: 'Learning at Home Tips',
+            icon: BookOpenCheck,
+            component: LearningSupportAtHome,
+        },
+        {
+            id: 'online-safety',
+            name: 'Online Safety Guide',
+            icon: ShieldCheck,
+            component: OnlineSafetyGuide,
+        },
+
+        {
+            id: 'workshops',
+            name: 'Parent Workshops',
+            icon: Calendar,
+            component: ParentWorkshop,
+        },
+        {
+            id: 'community',
+            name: 'Community Support',
+            icon: Users,
+            
+            component: ParentCommunity,
+        },
+    ]
 
 
 };
