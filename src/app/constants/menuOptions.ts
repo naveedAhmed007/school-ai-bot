@@ -24,6 +24,8 @@ import LearningSupportAtHome from "../components/LearningSupportAtHome";
 import OnlineSafetyGuide from "../components/OnlineSafetyGuide";
 import ParentWorkshop from "../components/ParentWorkshop";
 import ParentCommunity from "../components/ParentCommunity";
+import FamilySupport from "../components/FamilySupport";
+import AcademicSupport from "../components/AcademicSupport";
 
 
 
@@ -70,11 +72,13 @@ export const menus = {
             id: 'academic',
             name: 'Academic Support',
             icon: BookOpenCheck,
+            component:AcademicSupport
         },
         {
             id: 'family',
             name: 'Family Support',
             icon: Users,
+            component:FamilySupport
         },
     ] satisfies WellbeingSupportMenuItem[],
 

@@ -40,14 +40,41 @@ const ChatSupport: React.FC<ChatSupportProps> = ({ onClose }) => {
     };
 
     return (
-        <div className="flex flex-col h-[400px] w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-300">
-            {/* Messages Area */}
-            <main className="flex-1 overflow-y-auto p-6 space-y-5 bg-gradient-to-b from-blue-50 to-white rounded-t-3xl">
+        <div className="flex flex-col h-[500px] w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+            {/* Header matching ContactVerification */}
+            <div className="flex items-center space-x-3 px-5 py-4 bg-white border-b border-gray-200">
+                <button
+                    onClick={onClose}
+                    className="text-blue-600 hover:text-blue-800 focus:outline-none"
+                    aria-label="Go Back"
+                    type="button"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2 className="text-xl font-semibold text-blue-700 flex-grow">
+                    Chat Support
+                </h2>
+            </div>
+
+            {/* Chat Body */}
+            <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4 bg-gradient-to-b from-blue-50 to-white">
                 {messages.map(({ id, from, text }) => (
                     <div
                         key={id}
-                        className={`max-w-[75%] px-6 py-4 rounded-3xl whitespace-pre-wrap text-sm
-              ${from === 'user' ? 'bg-blue-600 text-white ml-auto rounded-br-none' : 'bg-white shadow text-gray-900 rounded-bl-none'}`}
+                        className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm relative
+              ${from === 'user'
+                                ? 'bg-blue-600 text-white ml-auto rounded-br-sm'
+                                : 'bg-white text-gray-900 shadow rounded-bl-sm'
+                            }`}
                     >
                         {text}
                     </div>
@@ -55,13 +82,13 @@ const ChatSupport: React.FC<ChatSupportProps> = ({ onClose }) => {
                 <div ref={messagesEndRef} />
             </main>
 
-            {/* Input Area */}
+            {/* Input */}
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     sendMessage();
                 }}
-                className="border-t border-gray-300 px-5 py-4 flex items-center gap-4 rounded-b-3xl bg-white"
+                className="flex items-center gap-3 px-4 py-4 bg-white border-t border-gray-200"
             >
                 <textarea
                     value={input}
@@ -74,7 +101,7 @@ const ChatSupport: React.FC<ChatSupportProps> = ({ onClose }) => {
                 <button
                     type="submit"
                     disabled={!input.trim()}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-full disabled:opacity-50 hover:bg-blue-700 transition text-sm font-semibold"
+                    className="bg-blue-600 text-white px-5 py-2.5 rounded-full disabled:opacity-50 hover:bg-blue-700 transition text-sm font-medium"
                 >
                     Send
                 </button>
