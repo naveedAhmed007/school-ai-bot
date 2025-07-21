@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import OTPVerificationForm from "./OTPVerificationForm";
 import ReportTypeSelector from "./ReportTypeSelector";
-import ReportTypeSelection from "./ReportTypeSelector";
 import MedicalAbsenceForm from "./MedicalAbsenceForm";
 
 const yearGroups = ["Year 7", "Year 8", "Year 9", "Year 10", "Year 11"];
@@ -9,6 +8,7 @@ const yearGroups = ["Year 7", "Year 8", "Year 9", "Year 10", "Year 11"];
 interface Props {
     onBack: () => void;
 }
+
 const ContactVerification: React.FC<Props> = ({ onBack }) => {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -18,7 +18,6 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
     const [showOtpForm, setShowOtpForm] = useState(false);
     const [showReportType, setShowReportType] = useState(false);
     const [selectedReportType, setSelectedReportType] = useState<string | null>(null);
-
 
     const handleSendOtp = () => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -34,7 +33,6 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
     const handleVerified = () => {
         setShowOtpForm(false);
         setShowReportType(true);
-
         setEmail("");
         setPhone("");
         setStudentName("");
@@ -46,13 +44,14 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
         setSelectedReportType(id);
         setShowReportType(false);
     };
+
     const handleReportTypeBack = () => {
         setShowReportType(false);
-
     };
 
     const isFormValid = email && phone && studentName && yearGroup;
 
+    // Handle OTP Flow
     if (showOtpForm) {
         return (
             <OTPVerificationForm
@@ -67,14 +66,16 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
         );
     }
 
-    if (selectedReportType == "medical") {
+    // Handle Medical Form
+    if (selectedReportType === "medical") {
         return (
             <MedicalAbsenceForm
-
+                onBack={() => setSelectedReportType(null)}
             />
         );
     }
 
+    // Handle Report Type Selector
     if (showReportType) {
         return (
             <ReportTypeSelector
@@ -84,6 +85,7 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
         );
     }
 
+    // Default: Contact Verification
     return (
         <div className="px-5 flex-1 overflow-auto bg-gray-50">
             <div className="max-w-md mx-auto bg-white rounded-2xl shadow-md p-6 space-y-6">
@@ -134,29 +136,29 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
                     className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
 
-                <div>
-                    <select
-                        value={yearGroup}
-                        onChange={(e) => setYearGroup(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="">Select Year Group</option>
-                        {yearGroups.map((group) => (
-                            <option key={group} value={group}>
-                                {group}
-                            </option>
-                        ))}
-                    </select>
+                <select
+                    value={yearGroup}
+                    onChange={(e) => setYearGroup(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="">Select Year Group</option>
+                    {yearGroups.map((group) => (
+                        <option key={group} value={group}>
+                            {group}
+                        </option>
+                    ))}
+                </select>
 
-                    <button
-                        onClick={handleSendOtp}
-                        disabled={!isFormValid}
-                        className={`mt-4 w-full py-3 rounded-lg text-white font-medium text-sm transition-all ${isFormValid ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-300 cursor-not-allowed"
-                            }`}
-                    >
-                        Send OTP
-                    </button>
-                </div>
+                <button
+                    onClick={handleSendOtp}
+                    disabled={!isFormValid}
+                    className={`mt-4 w-full py-3 rounded-lg text-white font-medium text-sm transition-all ${isFormValid
+                            ? "bg-blue-600 hover:bg-blue-700"
+                            : "bg-blue-300 cursor-not-allowed"
+                        }`}
+                >
+                    Send OTP
+                </button>
             </div>
         </div>
     );
