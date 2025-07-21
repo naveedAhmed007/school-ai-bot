@@ -106,22 +106,20 @@ export default function SchoolCalendar() {
     info.el.style.padding = '2px 6px';
   }, []);
 
-  if (loading) {
-    // A fullscreen, perfectly‑centered loader
-    return (
-      <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-        <Loader size={160} />
-      </div>
-    );
-  }
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full mt-5 min-h-[600px]">
       <style>{`
       .fc-list-table .fc-list-event:hover td {
         background-color: #007bff !important;
       }
     `}</style>
 
+      {loading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60 mb-60">
+          <Loader size={100} /> {/* No fullScreen prop used */}
+        </div>
+      )}
 
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin]}

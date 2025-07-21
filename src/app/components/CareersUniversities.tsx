@@ -1,5 +1,6 @@
 import React from 'react';
 import { GraduationCap } from 'lucide-react';
+import MenuHeader from './MenuHeader';
 
 interface Props {
     onBack: () => void;
@@ -8,20 +9,7 @@ interface Props {
 const CareersUniversities: React.FC<Props> = ({ onBack }) => {
     return (
         <div className="px-5 flex-1 overflow-auto bg-gray-50 my-5">
-            <div className="flex justify-between items-center my-3">
-                <div className="flex items-center space-x-3">
-                    <GraduationCap className="text-blue-600" />
-                    <h2 className="text-xl font-semibold text-blue-800">
-                        Careers & Universities
-                    </h2>
-                </div>
-                <button
-                    onClick={onBack}
-                    className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
-                >
-                    ← Back
-                </button>
-            </div>
+            <MenuHeader onBack={onBack} title='Careers & Universities' />
 
             <p className="text-gray-700">
                 Helping students in Sixth Form prepare for life after school — whether that’s university, apprenticeships, or entering the workforce.

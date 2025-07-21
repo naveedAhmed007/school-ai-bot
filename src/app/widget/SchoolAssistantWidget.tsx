@@ -13,6 +13,7 @@ import ContactDetailsForm from '../components/ContactDetailsForm';
 import CareersUniversities from '../components/CareersUniversities';
 import ChatSupport from '../components/ChatSupport';
 import AgeAppropriateResources from '../components/AgeAppropriateResources';
+import MenuHeader from '../components/MenuHeader';
 
 
 const parentMenu = menus['parent-student'];
@@ -277,15 +278,8 @@ export default function SchoolAssistantWidget() {
                                                 </>
                                             ) : selectedItem ? (
                                                 <div className="">
-                                                    <div className="flex items-center gap-3">
-                                                        <button
-                                                            onClick={() => setSelectedItem(null)}
-                                                            className="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100"
-                                                        >
-                                                            <ArrowLeft size={18} />
-                                                        </button>
-                                                        <h3 className="text-lg font-semibold text-blue-700">{selectedItem.name}</h3>
-                                                    </div>
+                                                    <MenuHeader title={selectedItem.name} onBack={() => setSelectedItem(null)} />
+
 
                                                     <div className="bg-blue-50 px-4 rounded-xl border border-blue-100">
                                                         {selectedItem.component ? (
@@ -297,14 +291,16 @@ export default function SchoolAssistantWidget() {
                                                 </div>
                                             ) : (
                                                 <div className="space-y-3">
-                                                    <div className="mb-4 flex justify-between items-center">
+                                                    {/* <div className="mb-4 flex justify-between items-center">
                                                         <h3 className="text-base font-semibold text-blue-700">
                                                             {menuHeadings[currentMenu] || ''}
                                                         </h3>
                                                         <button onClick={resetMenu} className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
                                                             ← Back
                                                         </button>
-                                                    </div>
+                                                    </div> */}
+                                                    <MenuHeader title={menuHeadings[currentMenu] || ''} onBack={resetMenu} />
+
 
                                                     {currentMenuItems.length > 0 ? (
                                                         currentMenuItems.map((item, idx) => (

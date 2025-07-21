@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import OTPVerificationForm from "./OTPVerificationForm";
 import ReportTypeSelector from "./ReportTypeSelector";
 import MedicalAbsenceForm from "./MedicalAbsenceForm";
+import MenuHeader from "./MenuHeader";
 
 const yearGroups = ["Year 7", "Year 8", "Year 9", "Year 10", "Year 11"];
 
@@ -89,28 +90,7 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
     return (
         <div className="px-5 flex-1 overflow-auto bg-gray-50">
             <div className="max-w-md mx-auto bg-white rounded-2xl shadow-md p-6 space-y-6">
-                <div className="flex items-center space-x-3">
-                    <button
-                        onClick={onBack}
-                        className="text-blue-600 hover:text-blue-800 focus:outline-none"
-                        aria-label="Go Back"
-                        type="button"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <h2 className="text-xl font-semibold text-blue-700 flex-grow">
-                        Verify Contact Details
-                    </h2>
-                </div>
+                <MenuHeader onBack={onBack} title={"Verify Contact Details"} />
 
                 <input
                     type="email"
@@ -153,8 +133,8 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
                     onClick={handleSendOtp}
                     disabled={!isFormValid}
                     className={`mt-4 w-full py-3 rounded-lg text-white font-medium text-sm transition-all ${isFormValid
-                            ? "bg-blue-600 hover:bg-blue-700"
-                            : "bg-blue-300 cursor-not-allowed"
+                        ? "bg-blue-600 hover:bg-blue-700"
+                        : "bg-blue-300 cursor-not-allowed"
                         }`}
                 >
                     Send OTP

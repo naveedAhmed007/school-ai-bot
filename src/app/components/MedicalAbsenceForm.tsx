@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import MenuHeader from './MenuHeader';
 
 interface MedicalAbsenceFormProps {
-    onBack?: () => void;
+    onBack: () => void;
 }
 
 const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
@@ -34,29 +35,9 @@ const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
     return (
         <div className="px-5 flex-1 overflow-auto bg-gray-50">
             <div className="max-w-lg mx-auto space-y-4">
-                {/* Back Button + Heading in One Row */}
-                <div className="flex items-center justify-between mb-2">
-                    {onBack && (
-                        <button
-                            onClick={onBack}
-                            className="flex items-center text-sm text-blue-600 hover:underline"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-1"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Back
-                        </button>
-                    )}
-                    <h2 className="text-xl font-semibold text-blue-700">
-                        Medical Absence
-                    </h2>
-                </div>
+                
+                <MenuHeader onBack={onBack} title={"Medical Absence"} />
+
 
                 {/* Form Card */}
                 <div className="bg-white rounded-2xl shadow-md p-6 space-y-4">

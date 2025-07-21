@@ -75,7 +75,7 @@ export default function UniformInformation({ onBack }: Props) {
       {/* 2. Uniform Details */}
       {year && !showEmail && (
         <>
-          <section className="p-5 bg-blue-50 border border-blue-200 rounded-lg shadow-inner">
+          <section className="p-5 bg-blue-50 border border-blue-200 rounded-lg shadow-inner  mt-2">
             <h3 className="text-blue-800 font-semibold mb-3 flex items-center gap-2 text-lg">
               <CheckCircle size={22} className="text-blue-600" />
               Requirements List
