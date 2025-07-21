@@ -12,19 +12,16 @@ export default function UrgentHelp({ onBack }: Props) {
     if (showChat) {
         return (
             <div className="space-y-4">
-                <ChatSupport onClose={() => setShowChat(false)} />
+                <ChatSupport onClose={() => setShowChat(false)} title="Urgent Help Needed" />
             </div>
         );
     }
 
     return (
-        <div className="p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl shadow-lg space-y-5 border border-red-200">
+        <div className="p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl shadow-lg space-y-3 border border-red-200 mt-3">
 
 
-            <h3 className="text-xl font-bold text-red-700 flex items-center">
-                <AlertTriangle className="mr-3 w-6 h-6" /> Urgent Help Needed
-            </h3>
-
+           
             <p className="text-sm text-gray-700 leading-relaxed">
                 If you're in immediate danger or need urgent help, please use one of the following options. All communication is private and confidential.
             </p>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Star, CheckCircle, ShoppingCart } from 'lucide-react';
 import { TEXTS } from '../constants/texts';
 import EmailSummaryForm from './EmailSummaryForm';
+import MenuHeader from './MenuHeader';
 
 type Props = { onBack: () => void };
 
@@ -48,11 +49,20 @@ export default function UniformInformation({ onBack }: Props) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
+
+      {<MenuHeader title={
+        showEmail
+          ? "Send Uniform Info via Email"
+          : year
+            ? `Uniform Info for ${year}`
+            : "Uniform Information"
+      } onBack={handleBack} />}
+
       {/* 0. Choose Year */}
       {!year && (
         <>
-          <p className="text-gray-600 text-sm mb-4">{TEXTS.uniformYearGroupPrompt}</p>
+          <p className="text-gray-600 text-sm mb-4 mt-0">{TEXTS.uniformYearGroupPrompt}</p>
           <div className="grid grid-cols-2 gap-3">
             {YEAR_GROUPS.map((y) => (
               <button

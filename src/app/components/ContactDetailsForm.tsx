@@ -3,6 +3,9 @@ import OTPVerificationForm from "./OTPVerificationForm";
 import ReportTypeSelector from "./ReportTypeSelector";
 import MedicalAbsenceForm from "./MedicalAbsenceForm";
 import MenuHeader from "./MenuHeader";
+import IncidentReportForm from "./IncidentReportForm";
+import BullyingReportForm from "./BullyingReportForm";
+import GeneralConcernForm from "./GeneralConcern";
 
 const yearGroups = ["Year 7", "Year 8", "Year 9", "Year 10", "Year 11"];
 
@@ -71,10 +74,50 @@ const ContactVerification: React.FC<Props> = ({ onBack }) => {
     if (selectedReportType === "medical") {
         return (
             <MedicalAbsenceForm
-                onBack={() => setSelectedReportType(null)}
+                onBack={() => {
+                    setSelectedReportType(null)
+                    setShowReportType(true)
+                }
+                }
             />
         );
     }
+    if (selectedReportType === "incident") {
+        return (
+            <IncidentReportForm
+                onBack={() => {
+                    setSelectedReportType(null)
+                    setShowReportType(true)
+                }
+                }
+            />
+        );
+    }
+
+    if (selectedReportType === "bullying") {
+        return (
+            <BullyingReportForm
+                onBack={() => {
+                    setSelectedReportType(null)
+                    setShowReportType(true)
+                }
+                }
+            />
+        );
+    }
+
+    if (selectedReportType === "general") {
+        return (
+            <GeneralConcernForm
+                onBack={() => {
+                    setSelectedReportType(null)
+                    setShowReportType(true)
+                }
+                }
+            />
+        );
+    }
+
 
     // Handle Report Type Selector
     if (showReportType) {

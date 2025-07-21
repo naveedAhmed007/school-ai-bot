@@ -3,13 +3,9 @@ import { Users } from 'lucide-react';
 
 const ParentCommunity = () => {
     return (
-        <div className="p-6 bg-white rounded-2xl shadow-lg space-y-4">
-            <div className="flex items-center space-x-3">
-                <Users className="text-blue-600" />
-                <h2 className="text-xl font-semibold text-blue-800">Community Support</h2>
-            </div>
+        <div className="bg-gradient-to-br from-blue-50 to-white px-6 py-1 rounded-2xl shadow-md space-y-0">
 
-            <p className="text-gray-700">
+            <p className="text-gray-700  my-3">
                 Our community programs aim to create a strong support network for families:
             </p>
 

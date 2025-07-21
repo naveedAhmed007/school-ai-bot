@@ -3,17 +3,10 @@ import { ShieldCheck, ExternalLink } from 'lucide-react';
 
 const OnlineSafetyGuide = () => {
     return (
-        <div className="bg-gradient-to-br from-purple-50 to-white p-6 rounded-2xl shadow-md space-y-6">
-            {/* Header */}
-            <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-full">
-                    <ShieldCheck className="text-purple-700" size={24} />
-                </div>
-                <h2 className="text-2xl font-bold text-purple-800">Online Safety Guide</h2>
-            </div>
-
+        <div className="bg-gradient-to-br from-blue-50 to-white px-6 py-1 rounded-2xl shadow-md space-y-0">
+           
             {/* Description */}
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-gray-700 text-base leading-relaxed  my-3">
                 Help your child stay safe online by following these essential safety tips:
             </p>
 

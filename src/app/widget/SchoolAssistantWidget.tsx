@@ -278,12 +278,12 @@ export default function SchoolAssistantWidget() {
                                                 </>
                                             ) : selectedItem ? (
                                                 <div className="">
-                                                    <MenuHeader title={selectedItem.name} onBack={() => setSelectedItem(null)} />
+                                                    {selectedItem.name != "Uniform Information" && <MenuHeader title={selectedItem.name} onBack={() => setSelectedItem(null)} />}
 
 
                                                     <div className="bg-blue-50 px-4 rounded-xl border border-blue-100">
                                                         {selectedItem.component ? (
-                                                            <selectedItem.component />
+                                                            <selectedItem.component onBack={() => setSelectedItem(null)} />
                                                         ) : (
                                                             <p className="text-sm text-gray-700 whitespace-pre-line">{selectedItem.content ?? 'No content provided.'}</p>
                                                         )}

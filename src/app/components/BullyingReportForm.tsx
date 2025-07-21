@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import MenuHeader from './MenuHeader';
 
-interface MedicalAbsenceFormProps {
+interface BullyingReportFormProps {
     onBack: () => void;
 }
 
-const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
-    const [absenceDate, setAbsenceDate] = useState('');
-    const [reason, setReason] = useState('');
-    const [returnDate, setReturnDate] = useState('');
-    const [needsCertificate, setNeedsCertificate] = useState(false);
+const BullyingReportForm: React.FC<BullyingReportFormProps> = ({ onBack }) => {
+    const [incidentDate, setIncidentDate] = useState('');
+    const [location, setLocation] = useState('');
+    const [description, setDescription] = useState('');
+    const [involvedParties, setInvolvedParties] = useState('');
+    const [anonymous, setAnonymous] = useState(false);
     const [confirmationMethods, setConfirmationMethods] = useState<string[]>([]);
 
     const toggleConfirmation = (method: string) => {
@@ -22,83 +23,92 @@ const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
 
     const handleSubmit = () => {
         const formData = {
-            absenceDate,
-            reason,
-            returnDate,
-            needsCertificate,
+            incidentDate,
+            location,
+            description,
+            involvedParties,
+            anonymous,
             confirmationMethods,
         };
-        console.log('Submitted:', formData);
-        alert('📤 Medical absence submitted!');
+        console.log('📤 Bullying report submitted:', formData);
+        alert('✅ Bullying report submitted successfully!');
     };
 
     return (
         <div className="px-5 flex-1 overflow-auto bg-gray-50">
             <div className="max-w-lg mx-auto space-y-0">
                 
-                <MenuHeader onBack={onBack} title={"Medical Absence"} />
-
+                <MenuHeader onBack={onBack} title={"Report Bullying"} />
 
                 {/* Form Card */}
                 <div className="bg-white rounded-2xl shadow-md px-6 py-4 space-y-4">
-                    {/* Absence Date */}
+                    {/* Incident Date */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Absence Date
+                            Incident Date
                         </label>
                         <input
                             type="date"
-                            value={absenceDate}
-                            onChange={(e) => setAbsenceDate(e.target.value)}
+                            value={incidentDate}
+                            onChange={(e) => setIncidentDate(e.target.value)}
                             className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
                         />
                     </div>
 
-                    {/* Reason */}
+                    {/* Location */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 pt-2">
-                            Reason / Description
+                            Location (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            placeholder="e.g. Playground, Hallway"
+                            className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
+                        />
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 pt-2">
+                            Description of Incident
                         </label>
                         <textarea
                             rows={3}
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Describe what happened..."
                             className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
                         />
                     </div>
 
-                    {/* Return Date */}
+                    {/* Involved Parties */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Expected Return Date
+                        <label className="block text-sm font-medium text-gray-700 pt-2">
+                            People Involved (Optional)
                         </label>
                         <input
-                            type="date"
-                            value={returnDate}
-                            onChange={(e) => setReturnDate(e.target.value)}
+                            type="text"
+                            value={involvedParties}
+                            onChange={(e) => setInvolvedParties(e.target.value)}
+                            placeholder="Names of students, if known"
                             className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
                         />
                     </div>
 
-                    {/* Certificate */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Medical Certificate Required?
+                    {/* Anonymous Submission */}
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={anonymous}
+                            onChange={() => setAnonymous(!anonymous)}
+                            className="accent-blue-600"
+                            id="anonymous"
+                        />
+                        <label htmlFor="anonymous" className="text-sm text-gray-700">
+                            Submit anonymously
                         </label>
-                        <div className="flex gap-4">
-                            <button
-                                className={`px-4 py-2 rounded-lg border ${needsCertificate ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-                                onClick={() => setNeedsCertificate(true)}
-                            >
-                                Yes
-                            </button>
-                            <button
-                                className={`px-4 py-2 rounded-lg border ${!needsCertificate ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-                                onClick={() => setNeedsCertificate(false)}
-                            >
-                                No
-                            </button>
-                        </div>
                     </div>
 
                     {/* Confirmation Methods */}
@@ -134,4 +144,4 @@ const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
     );
 };
 
-export default MedicalAbsenceForm;
+export default BullyingReportForm;

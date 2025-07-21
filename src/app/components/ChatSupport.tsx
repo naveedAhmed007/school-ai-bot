@@ -3,9 +3,10 @@ import MenuHeader from './MenuHeader';
 
 interface ChatSupportProps {
     onClose: () => void;
+    title?:string,
 }
 
-const ChatSupport: React.FC<ChatSupportProps> = ({ onClose }) => {
+const ChatSupport: React.FC<ChatSupportProps> = ({ onClose,title="Chat Support" }) => {
     const [messages, setMessages] = useState([
         { id: 1, from: 'ai', text: 'Hi! How can I assist you today?' },
     ]);
@@ -43,7 +44,7 @@ const ChatSupport: React.FC<ChatSupportProps> = ({ onClose }) => {
     return (
         <div className="flex flex-col h-[500px] w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
 
-            <MenuHeader title={'Chat Support'} onBack={onClose} />
+            <MenuHeader title={title} onBack={onClose} />
 
             {/* Chat Body */}
             <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4 bg-gradient-to-b from-blue-50 to-white">

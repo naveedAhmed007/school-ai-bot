@@ -11,7 +11,7 @@ const CareersUniversities: React.FC<Props> = ({ onBack }) => {
         <div className="px-5 flex-1 overflow-auto bg-gray-50 my-5">
             <MenuHeader onBack={onBack} title='Careers & Universities' />
 
-            <p className="text-gray-700">
+            <p className="text-gray-700 my-2">
                 Helping students in Sixth Form prepare for life after school — whether that’s university, apprenticeships, or entering the workforce.
             </p>
 

@@ -3,14 +3,7 @@ import { BookOpen, ExternalLink } from 'lucide-react';
 
 const LearningSupportAtHome = () => {
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-white px-6 py-5 rounded-2xl shadow-md space-y-6">
-            {/* Header */}
-            <div className="flex items-center gap-3 my-1">
-                <div className="p-2 bg-blue-100 rounded-full">
-                    <BookOpen className="text-blue-700" size={24} />
-                </div>
-                <h2 className="text-2xl font-bold text-blue-800">Learning Support at Home</h2>
-            </div>
+        <div className="bg-gradient-to-br from-blue-50 to-white px-6 py-1 rounded-2xl shadow-md space-y-0">
 
             {/* Description */}
             <p className="text-gray-700 text-base leading-relaxed my-3">

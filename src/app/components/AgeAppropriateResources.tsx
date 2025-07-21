@@ -18,7 +18,7 @@ const AgeAppropriateResources: React.FC<Props> = ({ onBack }) => {
             <MenuHeader title={'Age-Appropriate Resources'} onBack={onBack} />
 
             {/* Card container */}
-            <div className="bg-white rounded-2xl shadow-md px-6 flex flex-col space-y-5 flex-grow overflow-auto">
+            <div className="bg-white rounded-2xl shadow-md px-6 flex flex-col space-y-5 flex-grow overflow-auto mt-2">
                 <p className="text-gray-700 leading-relaxed text-base">
                     Below are some carefully selected resources to support your wellbeing and development.
                 </p>

@@ -30,9 +30,8 @@ const academicResources = [
 
 const AcademicSupport = () => {
     return (
-        <div className="p-6 bg-white rounded-2xl shadow-md space-y-6">
+        <div className="px-6 py-2 bg-white rounded-2xl shadow-md space-y-0">
             <div className="space-y-2">
-                <h2 className="text-xl font-bold text-gray-800">Academic Support</h2>
                 <p className="text-sm text-gray-600 leading-relaxed">
                     Whether you're struggling with homework, preparing for exams, or looking for advice on future academic choices — we're here to support you.
                     The resources below are designed to help students build confidence, develop learning skills, and reach their full potential.

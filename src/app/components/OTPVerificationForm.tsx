@@ -27,12 +27,12 @@ const OTPVerificationForm: React.FC<Props> = ({
     };
 
     return (
-        <div className="bg-gray-50 flex items-start justify-center px-5 pt-10  flex-1 overflow-auto">
+        <div className="bg-gray-50 flex items-start justify-center px-5  flex-1 overflow-auto">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-md p-6 space-y-6">
 
                 <MenuHeader onBack={onBack} title={"Verify OTP"} />
 
-                <div className="pt-5">
+                <div className="pt-1">
 
                     <input
                         type="text"

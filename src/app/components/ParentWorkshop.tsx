@@ -3,13 +3,8 @@ import { Users } from 'lucide-react';
 
 const ParentWorkshop = () => {
     return (
-        <div className="p-6 bg-white rounded-2xl shadow-lg space-y-4">
-            <div className="flex items-center space-x-3">
-                <Users className="text-blue-600" />
-                <h2 className="text-xl font-semibold text-blue-800">Parent Workshops</h2>
-            </div>
-
-            <p className="text-gray-700">
+        <div className="bg-gradient-to-br from-blue-50 to-white px-6 py-1 rounded-2xl shadow-md space-y-0">
+            <p className="text-gray-700 mt-3 mb-2">
                 Join our parent workshops to better support your child's learning and wellbeing:
             </p>
 

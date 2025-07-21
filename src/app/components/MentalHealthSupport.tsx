@@ -38,7 +38,6 @@ const mentalHealthSupportOptions: SupportItem[] = [
 const MentalHealthSupport = () => {
     return (
         <div className="max-w-xl mx-auto p-6 bg-white rounded-3xl shadow-lg space-y-6">
-            <h2 className="text-2xl font-semibold text-blue-800">Mental Health Support</h2>
             <p className="text-gray-700">We're here to support your mental wellbeing. Please select what you'd like help with:</p>
 
             <div className="grid grid-cols-1 gap-4">

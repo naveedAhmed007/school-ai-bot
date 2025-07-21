@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import MenuHeader from './MenuHeader';
 
-interface MedicalAbsenceFormProps {
+interface GeneralConcernFormProps {
     onBack: () => void;
 }
 
-const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
-    const [absenceDate, setAbsenceDate] = useState('');
-    const [reason, setReason] = useState('');
-    const [returnDate, setReturnDate] = useState('');
-    const [needsCertificate, setNeedsCertificate] = useState(false);
+const GeneralConcernForm: React.FC<GeneralConcernFormProps> = ({ onBack }) => {
+    const [concernDate, setConcernDate] = useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [confirmationMethods, setConfirmationMethods] = useState<string[]>([]);
 
     const toggleConfirmation = (method: string) => {
@@ -22,83 +21,60 @@ const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
 
     const handleSubmit = () => {
         const formData = {
-            absenceDate,
-            reason,
-            returnDate,
-            needsCertificate,
+            concernDate,
+            title,
+            description,
             confirmationMethods,
         };
-        console.log('Submitted:', formData);
-        alert('📤 Medical absence submitted!');
+        console.log('Submitted Concern:', formData);
+        alert('📤 General concern submitted!');
     };
 
     return (
         <div className="px-5 flex-1 overflow-auto bg-gray-50">
             <div className="max-w-lg mx-auto space-y-0">
-                
-                <MenuHeader onBack={onBack} title={"Medical Absence"} />
+                <MenuHeader onBack={onBack} title="General Concern" />
 
-
-                {/* Form Card */}
                 <div className="bg-white rounded-2xl shadow-md px-6 py-4 space-y-4">
-                    {/* Absence Date */}
+                    {/* Concern Date */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Absence Date
+                            Concern Date
                         </label>
                         <input
                             type="date"
-                            value={absenceDate}
-                            onChange={(e) => setAbsenceDate(e.target.value)}
+                            value={concernDate}
+                            onChange={(e) => setConcernDate(e.target.value)}
                             className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
                         />
                     </div>
 
-                    {/* Reason */}
+                    {/* Title */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 pt-2">
-                            Reason / Description
+                            Title / Subject
+                        </label>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
+                            placeholder="Short summary"
+                        />
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 pt-2">
+                            Description
                         </label>
                         <textarea
                             rows={3}
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
+                            placeholder="Provide more details here"
                         />
-                    </div>
-
-                    {/* Return Date */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Expected Return Date
-                        </label>
-                        <input
-                            type="date"
-                            value={returnDate}
-                            onChange={(e) => setReturnDate(e.target.value)}
-                            className="w-full mt-1 border px-3 py-2 rounded-lg text-sm"
-                        />
-                    </div>
-
-                    {/* Certificate */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Medical Certificate Required?
-                        </label>
-                        <div className="flex gap-4">
-                            <button
-                                className={`px-4 py-2 rounded-lg border ${needsCertificate ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-                                onClick={() => setNeedsCertificate(true)}
-                            >
-                                Yes
-                            </button>
-                            <button
-                                className={`px-4 py-2 rounded-lg border ${!needsCertificate ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-                                onClick={() => setNeedsCertificate(false)}
-                            >
-                                No
-                            </button>
-                        </div>
                     </div>
 
                     {/* Confirmation Methods */}
@@ -134,4 +110,4 @@ const MedicalAbsenceForm: React.FC<MedicalAbsenceFormProps> = ({ onBack }) => {
     );
 };
 
-export default MedicalAbsenceForm;
+export default GeneralConcernForm;
