@@ -3,6 +3,7 @@ import { Avatar } from '@heroui/react';
 import { AvatarSelectorProps } from '../types';
 import { TEXTS } from '../constants/texts';
 
+
 export default function AvatarSelector({
   avatars,
   selectedId,

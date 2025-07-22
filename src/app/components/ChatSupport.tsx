@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
 
+import { useSelector } from 'react-redux';
+import { CartoonAvatars } from '../constants/cartoonAvatars';
+import { Avatar } from '@heroui/avatar';
+import { User } from 'lucide-react';
 interface Message {
     id: number;
     from: 'user' | 'ai';
@@ -53,11 +57,18 @@ const ChatSupport: React.FC<ChatSupportProps> = ({
             sendMessage();
         }
     };
+    const avatarId = useSelector((state: any) => state.avatar.avatarId);
+    const selectedAvatarObj: any | null =
+        avatarId ? CartoonAvatars.find((a) => a.id === avatarId) ?? null : null;
+
+
+
+
 
     return (
         <div className="flex flex-col h-[550px] w-full max-w-md bg-white rounded-b-2xl shadow-lg border border-t-0 overflow-hidden">
             {/* Generic Header */}
-            
+
             <div className="sticky top-0 z-10 bg-white shadow px-4 py-3 flex items-center justify-between">
                 {headerContent ? (
                     headerContent
@@ -97,11 +108,18 @@ const ChatSupport: React.FC<ChatSupportProps> = ({
                                 {text}
                             </div>
                             {from === 'user' && (
-                                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">
-                                    🧑
-                                </div>
-                            )}
-                        </div>
+                                selectedAvatarObj?.src ? (
+                                    <Avatar
+                                        src={selectedAvatarObj.src}
+                                        name={selectedAvatarObj.name}
+                                        className="w-8 h-8 rounded-full object-cover border border-gray-300"
+                                    />
+                                ) : (
+                                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">
+                                        🧑
+                                    </div>
+                                )
+                            )}                       </div>
                     </div>
                 ))}
 

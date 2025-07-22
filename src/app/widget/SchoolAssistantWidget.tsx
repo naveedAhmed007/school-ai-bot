@@ -14,6 +14,8 @@ import ChatSupport from '../components/ChatSupport';
 import AgeAppropriateResources from '../components/AgeAppropriateResources';
 import MenuHeader from '../components/MenuHeader';
 import { Avatar } from '@heroui/react';
+import { useDispatch } from 'react-redux';
+import { setAvatarId } from '../redux/features/avatarSlice';
 
 const parentMenu = menus['parent-student'];
 const schoolInfoMenu = menus['school-info'];
@@ -23,6 +25,7 @@ const parentResourcesMenu = menus['parent-Resources'];
 
 export default function SchoolAssistantWidget() {
     const [open, setOpen] = useState(false);
+    const dispatch=useDispatch()
     const [currentMenu, setCurrentMenu] = useState<
         'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow' | 'parent-Resources'
     >('parent-student');
@@ -200,6 +203,7 @@ export default function SchoolAssistantWidget() {
                             selectedId={avatarSelected}
                             onSelect={(id) => {
                                 setAvatarSelected(id);
+                                dispatch(setAvatarId(id));
                                 setShowAvatarSelection(false);
                             }}
                         />
