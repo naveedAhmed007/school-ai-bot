@@ -1,10 +1,17 @@
 import { JSX, ReactElement } from 'react';
 import { LucideIcon } from 'lucide-react';
 
+// export interface Avatar {
+//     id: number;
+//     name: string;
+//     svg: ReactElement;
+// }
+
+
 export interface Avatar {
     id: number;
     name: string;
-    svg: ReactElement;
+    src?: string; 
 }
 
 export interface AvatarSelectorProps {

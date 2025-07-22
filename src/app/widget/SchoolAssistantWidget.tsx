@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import AvatarSelector from '../components/AvatarSelector';
-import { Avatar } from '../types';
 import { CartoonAvatars } from '../constants/cartoonAvatars';
 import { ArrowLeft, User } from 'lucide-react';
 import { menus } from '../constants/menuOptions';
@@ -14,49 +13,46 @@ import CareersUniversities from '../components/CareersUniversities';
 import ChatSupport from '../components/ChatSupport';
 import AgeAppropriateResources from '../components/AgeAppropriateResources';
 import MenuHeader from '../components/MenuHeader';
-
+import { Avatar } from '@heroui/react';
 
 const parentMenu = menus['parent-student'];
 const schoolInfoMenu = menus['school-info'];
 const wellbeingFlowMenu = menus['wellbeing-flow'];
 const wellbeingInitMenu = menus['wellbeing-init'];
-const parentResourcesMenu = menus['parent-Resources']
+const parentResourcesMenu = menus['parent-Resources'];
 
 export default function SchoolAssistantWidget() {
-
-
     const [open, setOpen] = useState(false);
-    // Instead of selectedMenu, use currentMenu to track top-level menu category
-    const [currentMenu, setCurrentMenu] = useState<'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow' | 'parent-Resources'>('parent-student');
+    const [currentMenu, setCurrentMenu] = useState<
+        'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow' | 'parent-Resources'
+    >('parent-student');
 
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [avatarSelected, setAvatarSelected] = useState<number | null>(null);
     const [showAvatarSelection, setShowAvatarSelection] = useState(false);
     const [chatMode, setChatMode] = useState(false);
     const [showIncidentReport, setShowIncidentReport] = useState(false);
-    const [showCareers, setShowCareers] = useState(false)
+    const [showCareers, setShowCareers] = useState(false);
     const [showAgeResources, setShowAgeResources] = useState(false);
 
     const containerRef = useRef<HTMLDivElement>(null);
-
     const isMobile = useIsMobile();
 
-    // Map menus for easy access
     const subMenuMap: Record<string, any[]> = {
         'parent-student': parentMenu,
         'school-info': schoolInfoMenu,
         'wellbeing-init': wellbeingInitMenu,
         'wellbeing-flow': wellbeingFlowMenu,
-        'parent-Resources': parentResourcesMenu
+        'parent-Resources': parentResourcesMenu,
     };
+
     const menuHeadings: Record<string, string> = {
         'parent-student': 'Main Menu',
         'school-info': 'School Information',
         'wellbeing-init': 'Wellbeing Initial Assessment',
         'wellbeing-flow': 'Wellbeing Support Flow',
-        'parent-Resources': "Parent Resources"
+        'parent-Resources': 'Parent Resources',
     };
-
 
     useEffect(() => {
         if (open && isMobile) {
@@ -78,64 +74,40 @@ export default function SchoolAssistantWidget() {
         };
     }, [open, isMobile]);
 
-    useEffect(() => {
-        const saved = localStorage.getItem('selectedAvatar');
-        if (saved) setAvatarSelected(Number(saved));
-    }, []);
-
-    useEffect(() => {
-        if (avatarSelected !== null) {
-            localStorage.setItem('selectedAvatar', avatarSelected.toString());
-        }
-    }, [avatarSelected]);
-
     const handleMenuClick = (id: string) => {
         if (id === 'wellbeing') {
-            // Open initial assessment menu
             setCurrentMenu('wellbeing-init');
             setSelectedItem(null);
             setChatMode(false);
             setShowIncidentReport(false);
-            setShowCareers(false)
-
-        }
-        else if (id === 'report') {
+            setShowCareers(false);
+        } else if (id === 'report') {
             setSelectedItem(null);
             setChatMode(false);
             setShowIncidentReport(true);
-            setShowCareers(false)
-
-
-        }
-        else if (id === 'careers') {
+            setShowCareers(false);
+        } else if (id === 'careers') {
             setSelectedItem(null);
             setChatMode(false);
             setShowIncidentReport(false);
-            setShowCareers(true)
-
-
-        }
-        else if (id === 'question') {
+            setShowCareers(true);
+        } else if (id === 'question') {
             setChatMode(true);
-            setShowIncidentReport(false)
+            setShowIncidentReport(false);
             setSelectedItem(null);
-            setShowCareers(false)
-        }
-
-
-        else {
+            setShowCareers(false);
+        } else {
             setCurrentMenu(id as any);
             setSelectedItem(null);
             setChatMode(false);
             setShowIncidentReport(false);
-            setShowCareers(false)
+            setShowCareers(false);
         }
     };
 
     const handleSubMenuClick = (item: any) => {
         if (currentMenu === 'wellbeing-init') {
             if (item.id === 'for-my-child') {
-                // Navigate to wellbeing flow menu
                 setCurrentMenu('wellbeing-flow');
                 setSelectedItem(null);
             } else if (item.id === 'for-myself') {
@@ -146,8 +118,6 @@ export default function SchoolAssistantWidget() {
         } else if (item.component) {
             setSelectedItem(item);
         } else {
-
-            // default fallback
             setSelectedItem(item);
         }
     };
@@ -156,13 +126,12 @@ export default function SchoolAssistantWidget() {
         setSelectedItem(null);
         setCurrentMenu('parent-student');
         setChatMode(false);
-        setShowIncidentReport(false)
-        setShowCareers(false)
+        setShowIncidentReport(false);
+        setShowCareers(false);
     };
 
-    const selectedAvatarObj: Avatar | null = avatarSelected
-        ? CartoonAvatars.find((a) => a.id === avatarSelected) ?? null
-        : null;
+    const selectedAvatarObj: any | null =
+        avatarSelected ? CartoonAvatars.find((a) => a.id === avatarSelected) ?? null : null;
 
     const getWidgetSize = () => {
         if (isMobile) {
@@ -205,7 +174,6 @@ export default function SchoolAssistantWidget() {
         setShowCareers(false);
     };
 
-
     const widgetStyle = getWidgetSize();
 
     return (
@@ -237,82 +205,81 @@ export default function SchoolAssistantWidget() {
                         />
                     ) : chatMode ? (
                         <ChatSupport onClose={() => setChatMode(false)} />
-
-                    ) :
-                        showAgeResources ? (
-                            <AgeAppropriateResources
-                                onBack={() => setShowAgeResources(false)}
-                            />
-
-                        )
-                            : showIncidentReport ? (
-                                <ContactDetailsForm onBack={handleBackFromIncidentForm} />
-                            )
-                                : showCareers ? (
-                                    <CareersUniversities onBack={handleBackFromCareers} />
-                                )
-                                    : (
-                                        <div className="flex-1 overflow-auto p-4 text-gray-700">
-                                            {!currentMenu || currentMenu === 'parent-student' ? (
-                                                <>
-                                                    {selectedAvatarObj && (
-                                                        <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden">{selectedAvatarObj.svg}</div>
-                                                    )}
-                                                    <div className="text-center mb-6">
-                                                        <h2 className="text-xl font-semibold text-blue-700">👋 Hi! I'm your School Assistant</h2>
-                                                        <p className="text-sm text-gray-600 mt-1">How can I help you today?</p>
-                                                        <button
-                                                            onClick={() => setShowAvatarSelection(true)}
-                                                            className="inline-flex items-center gap-2 px-3 py-1 text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded transition-colors"
-                                                        >
-                                                            <User size={18} />
-                                                            <span className="text-sm font-medium">Choose Your Avatar</span>
-                                                        </button>
-                                                    </div>
-
-                                                    <div className="space-y-4" role="menu">
-                                                        {parentMenu.map((menu) => (
-                                                            <MenuButton key={menu.id} id={menu.id} name={menu.name} Icon={menu.icon} onClick={handleMenuClick} />
-                                                        ))}
-                                                    </div>
-                                                </>
-                                            ) : selectedItem ? (
-                                                <div className="">
-                                                    {selectedItem.name != "Uniform Information" && <MenuHeader title={selectedItem.name} onBack={() => setSelectedItem(null)} />}
-
-
-                                                    <div className="bg-blue-50 px-4 rounded-xl border border-blue-100">
-                                                        {selectedItem.component ? (
-                                                            <selectedItem.component onBack={() => setSelectedItem(null)} />
-                                                        ) : (
-                                                            <p className="text-sm text-gray-700 whitespace-pre-line">{selectedItem.content ?? 'No content provided.'}</p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-3">
-                                                    {/* <div className="mb-4 flex justify-between items-center">
-                                                        <h3 className="text-base font-semibold text-blue-700">
-                                                            {menuHeadings[currentMenu] || ''}
-                                                        </h3>
-                                                        <button onClick={resetMenu} className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
-                                                            ← Back
-                                                        </button>
-                                                    </div> */}
-                                                    <MenuHeader title={menuHeadings[currentMenu] || ''} onBack={resetMenu} />
-
-
-                                                    {currentMenuItems.length > 0 ? (
-                                                        currentMenuItems.map((item, idx) => (
-                                                            <MenuButton key={idx} id={item.id} name={item.name} Icon={item.icon} onClick={() => handleSubMenuClick(item)} />
-                                                        ))
-                                                    ) : (
-                                                        <p className="text-sm text-gray-600">No submenu available for this section yet.</p>
-                                                    )}
-                                                </div>
-                                            )}
+                    ) : showAgeResources ? (
+                        <AgeAppropriateResources onBack={() => setShowAgeResources(false)} />
+                    ) : showIncidentReport ? (
+                        <ContactDetailsForm onBack={handleBackFromIncidentForm} />
+                    ) : showCareers ? (
+                        <CareersUniversities onBack={handleBackFromCareers} />
+                    ) : (
+                        <div className="flex-1 overflow-auto p-4 text-gray-700">
+                            {!currentMenu || currentMenu === 'parent-student' ? (
+                                <>
+                                    {selectedAvatarObj ? (
+                                        <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-lg border-4 border-blue-300 animate-fadeIn">
+                                            <Avatar
+                                                src={selectedAvatarObj.src}
+                                                name={selectedAvatarObj.name}
+                                                className="w-full h-full"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center text-blue-400 border-4 border-blue-300 animate-pulse">
+                                            <User size={48} />
                                         </div>
                                     )}
+
+                                    <div className="text-center mb-8 px-4">
+                                        <h2 className="text-2xl font-bold text-blue-700 mb-2">👋 Hi! I'm your School Assistant</h2>
+                                        {!selectedAvatarObj && (
+                                            <p className="text-sm text-blue-600 mb-4">Please choose your avatar to get started.</p>
+                                        )}
+                                        <button
+                                            onClick={() => setShowAvatarSelection(true)}
+                                            className="inline-flex items-center gap-3 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition"
+                                        >
+                                            <User size={20} />
+                                            <span className="text-base font-semibold">Choose Your Avatar</span>
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-5" role="menu">
+                                        {parentMenu.map((menu) => (
+                                            <MenuButton key={menu.id} id={menu.id} name={menu.name} Icon={menu.icon} onClick={handleMenuClick} />
+                                        ))}
+                                    </div>
+                                </>
+                            ) : selectedItem ? (
+                                <div className="">
+                                    {selectedItem.name !== 'Uniform Information' && (
+                                        <MenuHeader title={selectedItem.name} onBack={() => setSelectedItem(null)} />
+                                    )}
+
+                                    <div className="bg-blue-50 px-4 rounded-xl border border-blue-100">
+                                        {selectedItem.component ? (
+                                            <selectedItem.component onBack={() => setSelectedItem(null)} />
+                                        ) : (
+                                            <p className="text-sm text-gray-700 whitespace-pre-line">
+                                                {selectedItem.content ?? 'No content provided.'}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    <MenuHeader title={menuHeadings[currentMenu] || ''} onBack={resetMenu} />
+
+                                    {currentMenuItems.length > 0 ? (
+                                        currentMenuItems.map((item, idx) => (
+                                            <MenuButton key={idx} id={item.id} name={item.name} Icon={item.icon} onClick={() => handleSubMenuClick(item)} />
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-gray-600">No submenu available for this section yet.</p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     <Footer />
                 </div>

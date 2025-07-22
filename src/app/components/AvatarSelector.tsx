@@ -1,9 +1,7 @@
 import React from 'react';
-import { TEXTS } from '../constants/texts';
+import { Avatar } from '@heroui/react';
 import { AvatarSelectorProps } from '../types';
-
-
-
+import { TEXTS } from '../constants/texts';
 
 export default function AvatarSelector({
   avatars,
@@ -11,29 +9,43 @@ export default function AvatarSelector({
   onSelect,
 }: AvatarSelectorProps) {
   return (
-    <div className="flex flex-col items-center justify-center flex-1 gap-4 px-4 py-6 text-center">
-      <p className="text-gray-600 text-sm md:text-base mb-2">
+    <div className="flex flex-col items-center justify-center flex-1 gap-6 px-6 py-8 bg-white rounded-2xl shadow-lg max-w-lg mx-auto">
+      <p className="text-gray-800 text-lg md:text-xl font-semibold mb-6">
         {TEXTS.selectAvatarPrompt}
       </p>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 w-full max-w-md">
-        {avatars.map((av) => (
-          <button
-            key={av.id}
-            onClick={() => onSelect(av.id)}
-            aria-pressed={selectedId === av.id}
-            className={`flex flex-col items-center p-3 md:p-4 rounded-xl border-2 ${
-              selectedId === av.id
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-blue-400 hover:bg-blue-50'
-            } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-          >
-            <div className="w-12 h-12 md:w-14 md:h-14 mb-2">{av.svg}</div>
-            <div className="text-xs md:text-sm font-medium text-gray-700 text-center leading-tight">
-              {av.name}
-            </div>
-          </button>
-        ))}
+      <div className="grid grid-cols-3 gap-6 w-full">
+        {avatars.map((av) => {
+          const isSelected = selectedId === av.id;
+
+          return (
+            <button
+              key={av.id}
+              onClick={() => onSelect(av.id)}
+              aria-pressed={isSelected}
+              aria-label={av.name}
+              title={av.name}
+              className={`flex flex-col items-center justify-center p-3 rounded-3xl border-4 transition-all
+                focus:outline-none focus:ring-4 focus:ring-blue-400
+                ${isSelected
+                  ? 'border-blue-600 bg-blue-100 shadow-lg scale-105'
+                  : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md'
+                }
+              `}
+            >
+              <div className="w-16 h-16 md:w-20 md:h-20 mb-3 rounded-full overflow-hidden">
+                <Avatar
+                  src={av.src}
+                  name={av.name}
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+              <div className="text-sm font-medium text-gray-900 text-center truncate max-w-[5rem]">
+                {av.name}
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
