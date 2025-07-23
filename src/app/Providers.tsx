@@ -1,10 +1,20 @@
-// app/Providers.tsx
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Provider } from 'react-redux';
-import { store } from './redux/features/store'; 
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
+import { makeStore } from './redux/features/store';
 
 export default function Providers({ children }: { children: ReactNode }) {
-    return <Provider store={store}>{children}</Provider>;
+    const store = useMemo(() => makeStore(), []); 
+    const persistor = useMemo(() => persistStore(store), [store]);
+
+    return (
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                {children}
+            </PersistGate>
+        </Provider>
+    );
 }

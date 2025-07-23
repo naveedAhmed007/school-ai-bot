@@ -14,7 +14,7 @@ import ChatSupport from '../components/ChatSupport';
 import AgeAppropriateResources from '../components/AgeAppropriateResources';
 import MenuHeader from '../components/MenuHeader';
 import { Avatar } from '@heroui/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAvatarId } from '../redux/features/avatarSlice';
 
 const parentMenu = menus['parent-student'];
@@ -25,7 +25,7 @@ const parentResourcesMenu = menus['parent-Resources'];
 
 export default function SchoolAssistantWidget() {
     const [open, setOpen] = useState(false);
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
     const [currentMenu, setCurrentMenu] = useState<
         'parent-student' | 'school-info' | 'wellbeing-init' | 'wellbeing-flow' | 'parent-Resources'
     >('parent-student');
@@ -132,9 +132,9 @@ export default function SchoolAssistantWidget() {
         setShowIncidentReport(false);
         setShowCareers(false);
     };
-
+    const avatarId = useSelector((state: any) => state.avatar.avatarId);
     const selectedAvatarObj: any | null =
-        avatarSelected ? CartoonAvatars.find((a) => a.id === avatarSelected) ?? null : null;
+        avatarId ? CartoonAvatars.find((a) => a.id === avatarId) ?? null : null;
 
     const getWidgetSize = () => {
         if (isMobile) {
@@ -178,6 +178,17 @@ export default function SchoolAssistantWidget() {
     };
 
     const widgetStyle = getWidgetSize();
+    const handleClose = () => {
+        setOpen(false);
+        setCurrentMenu('parent-student');
+        setSelectedItem(null);
+        setChatMode(false);
+        setShowIncidentReport(false);
+        setShowCareers(false);
+        setShowAgeResources(false);
+        setShowAvatarSelection(false);
+        setAvatarSelected(null);
+    };
 
     return (
         <div
@@ -195,7 +206,7 @@ export default function SchoolAssistantWidget() {
                     className="bg-white shadow-2xl border border-gray-200 flex flex-col overflow-hidden fixed"
                     style={widgetStyle}
                 >
-                    <Header setOpen={setOpen} isMobile={isMobile} onTeacherLogin={() => { }} />
+                    <Header onClose={handleClose} isMobile={isMobile} onTeacherLogin={() => { }} />
 
                     {showAvatarSelection ? (
                         <AvatarSelector

@@ -3,12 +3,12 @@ import React from 'react'
 import { TEXTS } from '../constants/texts'
 import clsx from 'clsx';
 interface HeaderProps {
-    setOpen: (open: boolean) => void
-    isMobile: boolean
+    isMobile: boolean,
+    onClose: () => void,
     onTeacherLogin: () => void
 }
 
-export default function Header({ setOpen, isMobile, onTeacherLogin }: HeaderProps) {
+export default function Header({ isMobile, onTeacherLogin, onClose }: HeaderProps) {
     return (
         <header className="relative bg-blue-600 text-white shadow-md h-16 flex items-center px-4">
             {/* Centered Login Button */}
@@ -29,7 +29,7 @@ export default function Header({ setOpen, isMobile, onTeacherLogin }: HeaderProp
 
             {/* Close Button on the Right */}
             <button
-                onClick={() => setOpen(false)}
+                onClick={onClose}
                 aria-label={TEXTS.closeButtonLabel}
                 className="ml-auto p-2 rounded-full hover:bg-white/20 transition-colors"
                 style={{ zIndex: 10 }}
